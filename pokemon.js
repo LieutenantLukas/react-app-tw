@@ -5,7 +5,7 @@ function getType(id){
 
 
 
-
+// dor dor dor
 }
 
 
