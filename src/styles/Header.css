@@ -1,0 +1,29 @@
+.header {
+    background-color: #aec6cf; 
+    color: #fff;
+    padding: 1rem;
+  }
+  
+  .nav-menu {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-menu li a {
+    text-decoration: none;
+    color: #333; 
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: 2px solid transparent; 
+    transition: all 0.3s ease;
+  }
+  
+  .nav-menu li a:hover {
+    color: #ff6961; 
+    background-color: #fdfd96; 
+    border-color: #333; 
+  }
+  

@@ -1,0 +1,58 @@
+.pokemons {
+  text-align: center;
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.pokemon-list {
+  display: flex;
+  flex-wrap: wrap; /* Para trocar de linha  */
+  gap: 1rem; /* Espaço entre as boxes */
+  justify-content: center; /* Centrar conteudo */
+}
+
+.pokemon-item {
+  position: relative;
+  border: 3px solid #333; /* Bordas */
+  border-radius: 8px;
+  color: #fff; /* Branco */
+  padding: 0.5rem; /* Reduz o padding interno */
+  text-align: center;
+  width: 150px; /* Largura da box */
+  height: 220px; /* Altura da box */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+
+.pokemon-item:hover {
+  transform: scale(1.05); /* Efeito de zoom */
+}
+
+.pokemon-id {
+  position: absolute;
+  top: 10px;
+  left: 10px; /* ID no canto superior esquerdo */
+  font-size: 0.9rem;
+  color: #fff; /* Branco */
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+.pokemon-image {
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: auto; /* Mantém a proporção */
+  max-height: 140px; /* Limita a altura máxima da imagem */
+  display: block; /* Garante que a imagem seja renderizada corretamente */
+  margin: auto; /* Centraliza a imagem no container */
+}
+
+.pokemon-name {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: #fff; /* Branco */
+  margin-top: auto; /* Move o nome para a parte inferior */
+}
