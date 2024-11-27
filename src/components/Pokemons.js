@@ -62,7 +62,7 @@ const Pokemons = () => {
     <div className="pokemons">
       <h1>Pokémons Disponíveis</h1>
       {loading ? (
-        <p>Carregando...</p> // Mensagem de carregamento
+        <p>A carregar...</p> // Mensagem de carregamento
       ) : error ? (
         <p>Erro ao carregar Pokémon. Tente novamente mais tarde.</p> // Mensagem de erro
       ) : (
