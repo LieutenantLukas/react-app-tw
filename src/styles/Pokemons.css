@@ -1,7 +1,7 @@
 .pokemons {
   text-align: center;
   padding: 2rem;
-  background-color: yellow; /*mudar cor bg lista*/
+  background-color: #fdfd96; /*mudar cor bg lista*/
 }
 
 .pokemon-list {
@@ -9,7 +9,7 @@
   flex-wrap: wrap; /* Para trocar de linha  */
   gap: 1rem; /* Espaço entre as boxes */
   justify-content: center; /* Centrar conteudo */
-  background:yellow ; /*mudar cor bg lista*/
+  background:#fdfd96 ; /*mudar cor bg lista*/
 }
 
 .pokemon-item {
