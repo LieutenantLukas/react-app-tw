@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Pokemons.css'; // Importa os estilos CSS específicos para este componente
+import { Link } from 'react-router-dom'; // Para redirecionar às páginas de detalhes
+import '../styles/Pokemons.css'; // Importa os estilos para este componente
 
-// Objeto que mapeia os tipos de Pokémon para suas cores correspondentes
+// Mapeia os tipos de Pokémon para cores específicas
 const typeColors = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -23,80 +24,72 @@ const typeColors = {
   fairy: '#D685AD',
 };
 
-// Componente principal que renderiza a lista de Pokémon
 const Pokemons = () => {
-  const [pokemons, setPokemons] = useState([]); // Estado que armazena os detalhes dos Pokémon
-  const [loading, setLoading] = useState(true); // Estado que controla o status de carregamento
-  const [error, setError] = useState(false); // Estado que controla se ocorreu algum erro
+  const [pokemons, setPokemons] = useState([]); // Armazena os dados detalhados dos Pokémon
+  const [loading, setLoading] = useState(true); // Controla o status de carregamento
+  const [error, setError] = useState(false); // Controla se houve erro durante a requisição
 
-  // Função para buscar os primeiros 150 Pokémon da PokéAPI
+  // Busca os dados dos Pokémon
   const fetchPokemons = async () => {
     try {
-      // Faz a requisição inicial para obter a lista básica dos 150 Pokémon
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150'); // Requisição à API
       if (!response.ok) {
-        // Lança um erro se a resposta da API não for bem-sucedida
         throw new Error(`Erro HTTP: ${response.status}`);
       }
-      const data = await response.json(); // Converte a resposta para JSON
+      const data = await response.json(); // Converte a resposta em JSON
 
-      // Mapeia cada Pokémon para buscar seus detalhes adicionais (como tipos e sprites)
+      // Faz uma segunda requisição para obter os detalhes de cada Pokémon
       const detailsPromises = data.results.map((pokemon) =>
         fetch(pokemon.url).then((res) => res.json())
       );
-      // Aguarda que todas as requisições para os detalhes dos Pokémon sejam concluídas
-      const details = await Promise.all(detailsPromises);
+      const details = await Promise.all(detailsPromises); // Aguarda todas as requisições
 
       setPokemons(details); // Atualiza o estado com os detalhes dos Pokémon
-      setLoading(false); // Define que o carregamento foi concluído
+      setLoading(false); // Finaliza o carregamento
     } catch (error) {
-      console.error('Erro ao buscar Pokémon:', error); // Registra o erro no console
-      setError(true); // Define que houve um erro
-      setLoading(false); // Finaliza o status de carregamento
+      console.error('Erro ao buscar Pokémon:', error);
+      setError(true);
+      setLoading(false); // Finaliza o carregamento mesmo em caso de erro
     }
   };
 
-  // Hook useEffect para iniciar a busca assim que o componente for montado
+  // useEffect para buscar os dados quando o componente é montado
   useEffect(() => {
-    fetchPokemons(); // Chama a função de busca ao montar o componente
-  }, []); // A lista vazia garante que este código será executado apenas uma vez
+    fetchPokemons();
+  }, []); // Executa apenas uma vez
 
   return (
     <div className="pokemons">
       <h1>Pokémons Disponíveis</h1>
       {loading ? (
-        // Renderiza uma mensagem de carregamento enquanto os dados não foram carregados
-        <p>Carregando...</p>
+        <p>Carregando...</p> // Mensagem de carregamento
       ) : error ? (
-        // Renderiza uma mensagem de erro se ocorreu algum problema durante a busca
-        <p>Erro ao carregar Pokémon. Tente novamente mais tarde.</p>
+        <p>Erro ao carregar Pokémon. Tente novamente mais tarde.</p> // Mensagem de erro
       ) : (
-        // Renderiza a lista de Pokémon quando os dados são carregados com sucesso
         <div className="pokemon-list">
           {pokemons.map((pokemon) => {
-            // Obtém o tipo principal do Pokémon e define a cor de fundo correspondente
             const primaryType = pokemon.types[0]?.type.name;
-            const backgroundColor = typeColors[primaryType] || '#fff';
+            const backgroundColor = typeColors[primaryType] || '#fff'; // Cor baseada no tipo
 
-            // Retorna a estrutura HTML de cada Pokémon com suas informações principais
             return (
               <div
-                key={pokemon.id} // Define uma chave única para o elemento, necessária para listas no React
+                key={pokemon.id} // Chave única para cada Pokémon
                 className="pokemon-item"
-                style={{ backgroundColor }} // Aplica a cor de fundo baseada no tipo do Pokémon
+                style={{ backgroundColor }} // Aplica cor de fundo com base no tipo
               >
-                {/* Exibe o ID do Pokémon no canto superior esquerdo */}
-                <span className="pokemon-id">#{pokemon.id}</span>
-                {/* Exibe a imagem (sprite) do Pokémon */}
+                <span className="pokemon-id">#{pokemon.id}</span> {/* Exibe o ID */}
                 <img
-                  src={pokemon.sprites.front_default} // URL da imagem do Pokémon
-                  alt={pokemon.name} // Texto alternativo descritivo
+                  src={pokemon.sprites.front_default} // Sprite do Pokémon
+                  alt={pokemon.name}
                   className="pokemon-image"
                 />
-                {/* Exibe o nome do Pokémon com a primeira letra maiúscula */}
                 <h3 className="pokemon-name">
-                  {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                  {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} {/* Nome com a primeira letra maiúscula */}
                 </h3>
+                {/* Ícone "I" que leva à página de detalhes */}
+                <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
+                  I
+                </Link>
               </div>
             );
           })}
