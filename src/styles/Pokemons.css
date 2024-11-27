@@ -54,7 +54,7 @@
   font-size: 1rem;
   font-weight: bold;
   text-transform: capitalize;
-  color: #fff; /* Branco */
+  color: black; /* Branco */
   margin-top: auto; /* Move o nome para a parte inferior */
 }
 

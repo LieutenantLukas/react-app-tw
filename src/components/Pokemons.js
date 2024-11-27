@@ -32,7 +32,7 @@ const Pokemons = () => {
   // Busca os dados dos Pokémon
   const fetchPokemons = async () => {
     try {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150'); // Requisição à API
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=252'); // Requisição à API
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }

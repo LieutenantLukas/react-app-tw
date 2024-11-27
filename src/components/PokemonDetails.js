@@ -40,7 +40,7 @@ const PokemonDetails = () => {
       <h1>{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h1>
       <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       <p><strong>ID:</strong> #{pokemon.id}</p>
-      <p><strong>Peso:</strong> {pokemon.weight / 10} kg</p>
+      <p><strong>Peso:</strong> {pokemon.weight/10} kg</p>
       <p><strong>Tipos:</strong></p>
       <ul>
         {pokemon.types.map((type) => (
