@@ -90,3 +90,41 @@
   margin-left: 81rem;
   font-size: 0.9rem;
 }
+
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espaço uniforme entre botões e número */
+  margin-top: 0.3rem; /* Reduz a margem superior */
+  background-color: rgba(255, 255, 255, 0.2); /* Fundo translúcido */
+  border-radius: 5px; /* Bordas levemente arredondadas */
+  padding: 0.2rem 0.4rem; /* Menor padding interno */
+  width: 70px; /* Largura menor */
+  height: 30px; /* Altura compacta */
+  margin-left: auto;
+  margin-right: auto; /* Centraliza no card */
+}
+
+.counter button {
+  background-color: #ff6b81;
+  color: #fff; 
+  border: none; 
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.counter button:hover {
+  background-color: #ff7f91; /* Cor mais clara no hover */
+}
+
+.counter span {
+  font-size: 0.9rem; /* Texto menor */
+  font-weight: bold;
+  color: #fff; /* Branco para contraste */
+}
