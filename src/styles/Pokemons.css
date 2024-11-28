@@ -81,6 +81,7 @@
 }
 
 .search-input{
+  position:absolute;
   top: 2rem;
   right: 2rem; 
   width: 300px; 

@@ -29,7 +29,7 @@ const Pokemons = () => {
   const [loading, setLoading] = useState(true); // Controla o status de carregamento
   const [error, setError] = useState(false); // Controla se houve erro durante a requisição
   const [searchTerm, setSearchTerm] = useState(''); // Armazena o termo de busca
-  const [filteredPokemons, setFilteredPokemons] = useState([]); // Armazena os Pokémon filtrados
+
 
   // Busca os dados dos Pokémon
   const fetchPokemons = async () => {
@@ -79,8 +79,11 @@ const Pokemons = () => {
           {pokemons.map((pokemon) => {
             //console.log(searchTerm);
             //console.log(pokemon.name[0,searchTerm.length-1])
+
             if (pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) || searchTerm == "" || pokemon.id.toString().includes(searchTerm)) {
               const primaryType = pokemon.types[0].type.name; // Obtém o tipo primário do Pokémon
+              console.log(pokemons);
+
               const backgroundColor = typeColors[primaryType]; // Obtém a cor correspondente
               return (
                 <div
