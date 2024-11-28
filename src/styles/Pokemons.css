@@ -2,6 +2,7 @@
   text-align: center;
   padding: 2rem;
   background-color: #fdfd96; /*mudar cor bg lista*/
+  position: relative; 
 }
 
 .pokemon-list {
@@ -77,4 +78,14 @@
   opacity: 0.9; /* Leve transparência */
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease; /* Animação no hover */
+}
+
+.search-input{
+  top: 2rem;
+  right: 2rem; 
+  width: 300px; 
+  padding: 0.75rem; 
+  margin-bottom: 2rem; 
+  margin-left: 81rem;
+  font-size: 0.9rem;
 }

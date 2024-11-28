@@ -28,6 +28,8 @@ const Pokemons = () => {
   const [pokemons, setPokemons] = useState([]); // Armazena os dados detalhados dos Pokémon
   const [loading, setLoading] = useState(true); // Controla o status de carregamento
   const [error, setError] = useState(false); // Controla se houve erro durante a requisição
+  const [searchTerm, setSearchTerm] = useState(''); // Armazena o termo de busca
+  const [filteredPokemons, setFilteredPokemons] = useState([]); // Armazena os Pokémon filtrados
 
   // Busca os dados dos Pokémon
   const fetchPokemons = async () => {
@@ -61,6 +63,13 @@ const Pokemons = () => {
   return (
     <div className="pokemons">
       <h1>Pokémons Disponíveis</h1>
+      <input
+        type="text"
+        placeholder="Procure por nome ou ID"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o termo de busca
+        className="search-input"
+      />
       {loading ? (
         <p>A carregar...</p> // Mensagem de carregamento
       ) : error ? (
@@ -68,30 +77,32 @@ const Pokemons = () => {
       ) : (
         <div className="pokemon-list">
           {pokemons.map((pokemon) => {
-            const primaryType = pokemon.types[0]?.type.name;
-            const backgroundColor = typeColors[primaryType] || '#fff'; // Cor baseada no tipo
-
-            return (
-              <div
-                key={pokemon.id} // Chave única para cada Pokémon
-                className="pokemon-item"
-                style={{ backgroundColor }} // Aplica cor de fundo com base no tipo
-              >
-                <span className="pokemon-id">#{pokemon.id}</span> {/* Exibe o ID */}
-                <img
-                  src={pokemon.sprites.front_default} // Sprite do Pokémon
-                  alt={pokemon.name}
-                  className="pokemon-image"
-                />
-                <h3 className="pokemon-name">
-                  {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} {/* Nome com a primeira letra maiúscula */}
-                </h3>
-                {/* Ícone "I" que leva à página de detalhes */}
-                <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
-                  I
-                </Link>
-              </div>
-            );
+            //console.log(searchTerm);
+            //console.log(pokemon.name[0,searchTerm.length-1])
+            if (pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) || searchTerm == "" || pokemon.id.toString().includes(searchTerm)) {
+              const primaryType = pokemon.types[0].type.name; // Obtém o tipo primário do Pokémon
+              const backgroundColor = typeColors[primaryType]; // Obtém a cor correspondente
+              return (
+                <div
+                  key={pokemon.id}
+                  className="pokemon-item"
+                  style={{ backgroundColor }}
+                >
+                  <span className="pokemon-id">#{pokemon.id}</span>
+                  <img
+                    src={pokemon.sprites.front_default}
+                    alt={pokemon.name}
+                    className="pokemon-image"
+                  />
+                  <h3 className="pokemon-name">
+                    {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                  </h3>
+                  <Link to={`/pokemons/${pokemon.id}`} className="details-button">
+                    Detalhes
+                  </Link>
+                </div>
+              );
+            }
           })}
         </div>
       )}
@@ -99,4 +110,42 @@ const Pokemons = () => {
   );
 };
 
+
 export default Pokemons;
+
+
+/*
+{pokemons
+            .filter((pokemon) => {
+              return (
+                searchTerm === "" || // Mostrar todos se estiver vazrio
+                pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) || // Tudo minusculo pq maiusculo cringe(nsei se o api verifica)
+                pokemon.id.toString().includes(searchTerm) //  ID
+              );
+            })
+            .map((pokemon) => {
+              const primaryType = pokemon.types[0].type.name; // Tipo
+              const backgroundColor = typeColors[primaryType]; // Cor do tipo correspondente
+
+              return (
+                <div
+                  key={pokemon.id}
+                  className="pokemon-item"
+                  style={{ backgroundColor }}
+                >
+                  <span className="pokemon-id">#{pokemon.id}</span>
+                  <img
+                    src={pokemon.sprites.front_default}
+                    alt={pokemon.name}
+                    className="pokemon-image"
+                  />
+                  <h3 className="pokemon-name">
+                    {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                  </h3>
+                  <Link to={`/pokemons/${pokemon.id}`} className="details-button">
+                    Detalhes
+                  </Link>
+                </div>
+              );
+            })}
+*/
