@@ -97,8 +97,8 @@ const Pokemons = () => {
                   <h3 className="pokemon-name">
                     {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                   </h3>
-                  <Link to={`/pokemons/${pokemon.id}`} className="details-button">
-                    Detalhes
+                  <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
+                    I
                   </Link>
                 </div>
               );
