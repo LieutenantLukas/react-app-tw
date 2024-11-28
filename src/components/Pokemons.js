@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Para redirecionar às páginas de detalhes
 import '../styles/Pokemons.css'; // Importa os estilos para este componente
-
+const carrinho= new Array(252);
 // Mapeia os tipos de Pokémon para cores específicas
 const typeColors = {
   normal: '#A8A77A',
@@ -29,6 +29,7 @@ const Pokemons = () => {
   const [loading, setLoading] = useState(true); // Controla o status de carregamento
   const [error, setError] = useState(false); // Controla se houve erro durante a requisição
   const [searchTerm, setSearchTerm] = useState(''); // Armazena o termo de busca
+  const [counts, setCounts] = useState({}); 
 
 
   // Busca os dados dos Pokémon
@@ -45,7 +46,11 @@ const Pokemons = () => {
         fetch(pokemon.url).then((res) => res.json())
       );
       const details = await Promise.all(detailsPromises); // Aguarda todas as requisições
-
+      const initialCounts = details.reduce((counter, pokemon) => {
+        counter[pokemon.id] = 0; 
+        return counter;
+      }, {});
+      setCounts(initialCounts); 
       setPokemons(details); // Atualiza o estado com os detalhes dos Pokémon
       setLoading(false); // Finaliza o carregamento
     } catch (error) {
@@ -59,6 +64,20 @@ const Pokemons = () => {
   useEffect(() => {
     fetchPokemons();
   }, []); // Executa apenas uma vez
+
+  const incrementCount = (id) => {
+    setCounts((prevCounts) => ({
+      ...prevCounts,
+      [id]: prevCounts[id] + 1,
+    }));
+  };
+
+  const decrementCount = (id) => {
+    setCounts((prevCounts) => ({
+      ...prevCounts,
+      [id]: Math.max(prevCounts[id] - 1, 0),
+    }));
+  };
 
   return (
     <div className="pokemons">
@@ -82,7 +101,6 @@ const Pokemons = () => {
 
             if (pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) || searchTerm == "" || pokemon.id.toString().includes(searchTerm)) {
               const primaryType = pokemon.types[0].type.name; // Obtém o tipo primário do Pokémon
-              console.log(pokemons);
 
               const backgroundColor = typeColors[primaryType]; // Obtém a cor correspondente
               return (
@@ -90,21 +108,31 @@ const Pokemons = () => {
                   key={pokemon.id}
                   className="pokemon-item"
                   style={{ backgroundColor }}
+                 
                 >
+                  
                   <span className="pokemon-id">#{pokemon.id}</span>
                   <img
                     src={pokemon.sprites.front_default}
                     alt={pokemon.name}
                     className="pokemon-image"
                   />
+                  
                   <h3 className="pokemon-name">
                     {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                   </h3>
+                  <div className="counter">
+                    <button onClick={() => decrementCount(pokemon.id)}>-</button>
+                    <span>{counts[pokemon.id]}</span>
+                    <button onClick={() => incrementCount(pokemon.id)}>+</button>
+                  </div>
                   <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
                     I
                   </Link>
                 </div>
+                
               );
+             // console.log(acc[key]);
             }
           })}
         </div>
@@ -151,4 +179,7 @@ export default Pokemons;
                 </div>
               );
             })}
+
+<
+
 */
