@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Para redirecionar às páginas de detalhes
 import '../styles/Pokemons.css'; // Importa os estilos para este componente
-const carrinho= new Array(252);
+
+
 // Mapeia os tipos de Pokémon para cores específicas
 const typeColors = {
   normal: '#A8A77A',
@@ -29,7 +30,7 @@ const Pokemons = () => {
   const [loading, setLoading] = useState(true); // Controla o status de carregamento
   const [error, setError] = useState(false); // Controla se houve erro durante a requisição
   const [searchTerm, setSearchTerm] = useState(''); // Armazena o termo de busca
-  const [counts, setCounts] = useState({}); 
+  const [counts, setCounts] = useState({});
 
 
   // Busca os dados dos Pokémon
@@ -47,10 +48,10 @@ const Pokemons = () => {
       );
       const details = await Promise.all(detailsPromises); // Aguarda todas as requisições
       const initialCounts = details.reduce((counter, pokemon) => {
-        counter[pokemon.id] = 0; 
+        counter[pokemon.id] = 0;
         return counter;
       }, {});
-      setCounts(initialCounts); 
+      setCounts(initialCounts);
       setPokemons(details); // Atualiza o estado com os detalhes dos Pokémon
       setLoading(false); // Finaliza o carregamento
     } catch (error) {
@@ -66,17 +67,22 @@ const Pokemons = () => {
   }, []); // Executa apenas uma vez
 
   const incrementCount = (id) => {
+   
     setCounts((prevCounts) => ({
       ...prevCounts,
       [id]: prevCounts[id] + 1,
     }));
+   // console.log(counts[id]);
   };
 
   const decrementCount = (id) => {
+
+   
     setCounts((prevCounts) => ({
       ...prevCounts,
       [id]: Math.max(prevCounts[id] - 1, 0),
     }));
+   
   };
 
   return (
@@ -89,6 +95,8 @@ const Pokemons = () => {
         onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o termo de busca
         className="search-input"
       />
+<button onClick={() => {const total=Object.values(counts).reduce((sum,counts)=>sum+counts*2,0);console.log(total)}}>carrinho</button>
+
       {loading ? (
         <p>A carregar...</p> // Mensagem de carregamento
       ) : error ? (
@@ -108,16 +116,16 @@ const Pokemons = () => {
                   key={pokemon.id}
                   className="pokemon-item"
                   style={{ backgroundColor }}
-                 
+
                 >
-                  
+
                   <span className="pokemon-id">#{pokemon.id}</span>
                   <img
                     src={pokemon.sprites.front_default}
                     alt={pokemon.name}
                     className="pokemon-image"
                   />
-                  
+
                   <h3 className="pokemon-name">
                     {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                   </h3>
@@ -129,15 +137,18 @@ const Pokemons = () => {
                   <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
                     I
                   </Link>
+
                 </div>
-                
+
               );
-             // console.log(acc[key]);
+              // console.log(acc[key]);
             }
           })}
         </div>
+
       )}
     </div>
+
   );
 };
 
