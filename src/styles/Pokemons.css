@@ -1,27 +1,37 @@
 .pokemons {
   text-align: center;
   padding: 2rem;
-  background-color: #fdfd96; /*mudar cor bg lista*/
-  position: relative; 
+  background-color: #fdfd96;
+  /*mudar cor bg lista*/
+  position: relative;
 }
 
 .pokemon-list {
   display: flex;
-  flex-wrap: wrap; /* Para trocar de linha  */
-  gap: 1rem; /* Espaço entre as boxes */
-  justify-content: center; /* Centrar conteudo */
-  background:#fdfd96 ; /*mudar cor bg lista*/
+  flex-wrap: wrap;
+  /* Para trocar de linha  */
+  gap: 1rem;
+  /* Espaço entre as boxes */
+  justify-content: center;
+  /* Centrar conteudo */
+  background: #fdfd96;
+  /*mudar cor bg lista*/
 }
 
 .pokemon-item {
   position: relative;
-  border: 3px solid #333; /* Bordas */
+  border: 3px solid #333;
+  /* Bordas */
   border-radius: 8px;
-  color: #fff; /* Branco */
-  padding: 0.5rem; /* Reduz o padding interno */
+  color: #fff;
+  /* Branco */
+  padding: 0.5rem;
+  /* Reduz o padding interno */
   text-align: center;
-  width: 150px; /* Largura da box */
-  height: 220px; /* Altura da box */
+  width: 150px;
+  /* Largura da box */
+  height: 220px;
+  /* Altura da box */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,63 +40,86 @@
 
 
 .pokemon-item:hover {
-  transform: scale(1.05); /* Efeito de zoom */
+  transform: scale(1.05);
+  /* Efeito de zoom */
 }
 
 .pokemon-id {
   position: absolute;
   top: 10px;
-  left: 10px; /* ID no canto superior esquerdo */
+  left: 10px;
+  /* ID no canto superior esquerdo */
   font-size: 0.9rem;
-  color: #fff; /* Branco */
+  color: #fff;
+  /* Branco */
   font-weight: bold;
   opacity: 0.8;
 }
 
 .pokemon-image {
-  width: 100%; /* Faz a imagem ocupar toda a largura do container */
-  height: auto; /* Mantém a proporção */
-  max-height: 140px; /* Limita a altura máxima da imagem */
-  display: block; /* Garante que a imagem seja renderizada corretamente */
-  margin: auto; /* Centraliza a imagem no container */
+  width: 100%;
+  /* Faz a imagem ocupar toda a largura do container */
+  height: auto;
+  /* Mantém a proporção */
+  max-height: 140px;
+  /* Limita a altura máxima da imagem */
+  display: block;
+  /* Garante que a imagem seja renderizada corretamente */
+  margin: auto;
+  /* Centraliza a imagem no container */
 }
 
 .pokemon-name {
   font-size: 1rem;
   font-weight: bold;
   text-transform: capitalize;
-  color: black; /* Branco */
-  margin-top: auto; /* Move o nome para a parte inferior */
+  color: black;
+  /* Branco */
+  margin-top: auto;
+  /* Move o nome para a parte inferior */
 }
 
 .info-icon {
   position: absolute;
-  top: 10px; /* Fixa o ícone no canto superior direito */
+  top: 10px;
+  /* Fixa o ícone no canto superior direito */
   right: 10px;
-  background-color: #fff; /* Fundo branco */
-  color: #333; /* Cor do texto */
-  border-radius: 50%; /* Bordas arredondadas */
-  font-size: 1rem; /* Tamanho do texto */
-  width: 20px; /* Largura do ícone */
-  height: 20px; /* Altura do ícone */
+  background-color: #fff;
+  /* Fundo branco */
+  color: #333;
+  /* Cor do texto */
+  border-radius: 50%;
+  /* Bordas arredondadas */
+  font-size: 1rem;
+  /* Tamanho do texto */
+  width: 20px;
+  /* Largura do ícone */
+  height: 20px;
+  /* Altura do ícone */
   display: flex;
-  align-items: center; /* Centraliza o texto verticalmente */
-  justify-content: center; /* Centraliza o texto horizontalmente */
+  align-items: center;
+  /* Centraliza o texto verticalmente */
+  justify-content: center;
+  /* Centraliza o texto horizontalmente */
   font-weight: bold;
-  text-decoration: none; /* Remove o sublinhado */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para destaque */
-  opacity: 0.9; /* Leve transparência */
+  text-decoration: none;
+  /* Remove o sublinhado */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Sombra para destaque */
+  opacity: 0.9;
+  /* Leve transparência */
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease; /* Animação no hover */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  /* Animação no hover */
 }
 
-.search-input{
-  position:absolute;
+.search-input {
+  position: absolute;
   top: 2rem;
-  right: 2rem; 
-  width: 300px; 
-  padding: 0.75rem; 
-  margin-bottom: 2rem; 
+  right: 2rem;
+  width: 300px;
+  padding: 0.75rem;
+  margin-bottom: 2rem;
   margin-left: 81rem;
   font-size: 0.9rem;
 }
@@ -94,21 +127,29 @@
 .counter {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Espaço uniforme entre botões e número */
-  margin-top: 0.3rem; /* Reduz a margem superior */
-  background-color: rgba(255, 255, 255, 0.2); /* Fundo translúcido */
-  border-radius: 5px; /* Bordas levemente arredondadas */
-  padding: 0.2rem 0.4rem; /* Menor padding interno */
-  width: 70px; /* Largura menor */
-  height: 30px; /* Altura compacta */
+  justify-content: space-between;
+  /* Espaço uniforme entre botões e número */
+  margin-top: 0.3rem;
+  /* Reduz a margem superior */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Fundo translúcido */
+  border-radius: 5px;
+  /* Bordas levemente arredondadas */
+  padding: 0.2rem 0.4rem;
+  /* Menor padding interno */
+  width: 70px;
+  /* Largura menor */
+  height: 30px;
+  /* Altura compacta */
   margin-left: auto;
-  margin-right: auto; /* Centraliza no card */
+  margin-right: auto;
+  /* Centraliza no card */
 }
 
 .counter button {
   background-color: #ff6b81;
-  color: #fff; 
-  border: none; 
+  color: #fff;
+  border: none;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -120,21 +161,26 @@
 }
 
 .counter button:hover {
-  background-color: #ff7f91; /* Cor mais clara no hover */
+  background-color: #ff7f91;
+  /* Cor mais clara no hover */
 }
 
 .counter span {
-  font-size: 0.9rem; /* Texto menor */
+  font-size: 0.9rem;
+  /* Texto menor */
   font-weight: bold;
-  color: #fff; /* Branco para contraste */
+  color: #fff;
+  /* Branco para contraste */
 }
 
 .cart-icon {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #007bff; /* Cor azul */
-  border-radius: 50%; /* Formato circular */
+  background-color: #007bff;
+  /* Cor azul */
+  border-radius: 50%;
+  /* Formato circular */
   width: 60px;
   height: 60px;
   display: flex;
@@ -142,11 +188,13 @@
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  z-index: 1000; /* Garante que o botão fique acima de outros elementos */
+  z-index: 1000;
+  /* Garante que o botão fique acima de outros elementos */
 }
 
 .cart-icon:hover {
-  background-color: #0056b3; /* Azul mais escuro no hover */
+  background-color: #0056b3;
+  /* Azul mais escuro no hover */
 }
 
 .cart-bubble {
@@ -157,7 +205,8 @@
   color: white;
   font-size: 0.9rem;
   font-weight: bold;
-  border-radius: 50%; /* Forma circular */
+  border-radius: 50%;
+  /* Forma circular */
   width: 20px;
   height: 20px;
   display: flex;
@@ -195,17 +244,22 @@
 
 .cart-item {
   display: flex;
-  align-items: center; /* Alinha verticalmente */
-  justify-content: space-between; /* Separa as seções esquerda e direita */
+  align-items: center;
+  /* Alinha verticalmente */
+  justify-content: space-between;
+  /* Separa as seções esquerda e direita */
   margin-bottom: 0.5rem;
   padding: 0.5rem;
-  border-bottom: 1px solid #ddd; /* Linha separadora */
+  border-bottom: 1px solid #ddd;
+  /* Linha separadora */
 }
 
 .cart-item-left {
   display: flex;
-  align-items: center; /* Alinha imagem e nome na mesma linha */
-  flex: 1; /* Garante que o conteúdo à esquerda ocupe o espaço correto */
+  align-items: center;
+  /* Alinha imagem e nome na mesma linha */
+  flex: 1;
+  /* Garante que o conteúdo à esquerda ocupe o espaço correto */
 }
 
 .cart-item-image {
@@ -213,13 +267,15 @@
   height: 40px;
   object-fit: contain;
   border-radius: 5px;
-  margin-right: 0.5rem; /* Espaço entre a imagem e o nome */
+  margin-right: 0.5rem;
+  /* Espaço entre a imagem e o nome */
 }
 
 .cart-item-name {
   font-size: 1rem;
   font-weight: bold;
-  text-align: left; /* Garante o alinhamento à esquerda */
+  text-align: left;
+  /* Garante o alinhamento à esquerda */
   color: #333;
 }
 

@@ -1,18 +1,17 @@
 .home {
-    text-align: center;
-    margin-top: 2rem;
-    background-color: #fff; 
-    padding: 2rem;
-    border: 3px solid #aec6cf; 
-    border-radius: 8px;
-  }
-  
-  .home h1 {
-    color: #ff6961; 
-  }
-  
-  .home p {
-    color: #333; 
-    font-size: 1.2rem;
-  }
-  
+  text-align: center;
+  margin-top: 2rem;
+  background-color: #fff;
+  padding: 2rem;
+  border: 3px solid #aec6cf;
+  border-radius: 8px;
+}
+
+.home h1 {
+  color: #ff6961;
+}
+
+.home p {
+  color: #333;
+  font-size: 1.2rem;
+}
