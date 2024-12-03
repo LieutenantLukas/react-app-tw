@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <div className="contact">
       <h1>Contacto</h1>
-      <p>Entre ai em contacto mano bro</p>
+      <p>Tem alguma sugestão de como podemos melhorar o nosso serviço ? Não hesite em mandar mensagem!!!</p>
 
       <form>
       <label>Nome:</label>
@@ -14,7 +14,7 @@ const Contact = () => {
       <input type="text" id="assunto" required></input><br></br>
       <label>Mensagem:</label>
       <input type="textarea" id="mensagem" required></input><br></br>
-      <button type='submit'>Submit</button>
+      <button type="submit" id="submit">Submit</button>
       </form>
       
     </div>

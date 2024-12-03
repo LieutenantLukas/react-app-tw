@@ -108,7 +108,7 @@
   position: absolute;
   top: 2rem;
   right: 2rem;
-  width: 300px;
+  width: 200px;
   padding: 0.75rem;
   margin-bottom: 2rem;
   font-size: 0.9rem;
@@ -159,6 +159,8 @@
   /* Texto menor */
   font-weight: bold;
   cursor: pointer;
+ 
+
 }
 
 .counter button:hover {
@@ -175,6 +177,7 @@
   /* Largura ajustada */
   text-align: center;
   /* Centraliza o texto */
+  
 }
 
 .cart-icon {

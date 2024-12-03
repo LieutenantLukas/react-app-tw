@@ -16,3 +16,94 @@
   font-size: 1.2rem;
   color: #fff;
 }
+
+/* Style for the form container */
+form {
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #bfd2da; /*esta shit controla a cor do form. por favor escolhe uma cor melhor    */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Style for form labels */
+label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Style for input fields */
+#nome {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+#nome:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+#assunto {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+#assunto:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Style for the textarea (Mensagem field) */
+#mensagem {
+  width: 90%;
+  height: 150px; /* Increase the height */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+#mensagem:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Style for the submit button que por algum motivo nao funciona... */
+#submit {
+  width: 95%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#submit:hover {
+  background-color: #0056b3;
+}
+
+
+
+/*ao fazer este css descobri que por algum motivo a pagina pokemons.js vem buscar styles aqui tambem 
+(descobri isso porque a barra de pesquisa fodeu-se toda quando fiz cenas aqui para o form. mexer no css do botao submit tambem mexeu nos botoes do contador por algum motivo) 
+cuidado ao mexer aqui para nao alterar no codigo principal*/
