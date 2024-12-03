@@ -85,19 +85,23 @@
 
 .info-icon {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: #fff;
-  color: #333;
-  border-radius: 50%;
-  /* Ícone circular */
-  width: 20px;
-  height: 20px;
+  top: 10px; /* Fixa o ícone no canto superior direito */
+  right: 10px;
+  background-color: #fff; /* Fundo branco */
+  color: #333; /* Cor do texto */
+  border-radius: 50%; /* Bordas arredondadas */
+  font-size: 1rem; /* Tamanho do texto */
+  width: 20px; /* Largura do ícone */
+  height: 20px; /* Altura do ícone */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
+  align-items: center; /* Centraliza o texto verticalmente */
+  justify-content: center; /* Centraliza o texto horizontalmente */
+  font-weight: bold;
+  text-decoration: none; /* Remove o sublinhado */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para destaque */
+  opacity: 0.9; /* Leve transparência */
   cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Animação no hover */
 }
 
 .search-input {
