@@ -171,7 +171,7 @@ const Pokemons = () => {
       {/* Popup do Carrinho */}
       {showCart && (
         <div className="cart-popup">
-          <h3>Seu Carrinho</h3>
+          <h3>Carrinho</h3>
           <ul>
             {Object.entries(counts)
               .filter(([id, count]) => count > 0)
