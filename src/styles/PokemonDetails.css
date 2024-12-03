@@ -86,8 +86,6 @@
   border-radius: 5px;
   /* Bordas arredondadas */
   font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  /* Transições suaves */
 }
 
 .back-button:hover {
