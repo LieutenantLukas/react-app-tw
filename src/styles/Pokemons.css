@@ -1,44 +1,52 @@
 .pokemons {
   text-align: center;
   padding: 2rem;
-  background-color: #fdfd96; /*mudar cor bg lista*/
-  position: relative; 
+  background-color: #fdfd96;
+  /* Fundo amarelo suave */
+  position: relative;
 }
 
 .pokemon-list {
   display: flex;
-  flex-wrap: wrap; /* Para trocar de linha  */
-  gap: 1rem; /* Espaço entre as boxes */
-  justify-content: center; /* Centrar conteudo */
-  background:#fdfd96 ; /*mudar cor bg lista*/
+  flex-wrap: wrap;
+  /* Permite quebra de linha */
+  gap: 1rem;
+  /* Espaçamento entre itens */
+  justify-content: center;
+  /* Centraliza os itens */
 }
 
 .pokemon-item {
   position: relative;
-  border: 3px solid #333; /* Bordas */
+  border: 3px solid #333;
+  /* Bordas padrão */
   border-radius: 8px;
-  color: #fff; /* Branco */
-  padding: 0.5rem; /* Reduz o padding interno */
+  color: #fff;
+  /* Cor do texto */
+  padding: 0.5rem;
   text-align: center;
-  width: 150px; /* Largura da box */
-  height: 220px; /* Altura da box */
+  width: 150px;
+  /* Tamanho fixo */
+  height: 220px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Garante espaçamento entre elementos */
+  justify-content: space-between;
   transition: all 0.3s ease;
-  overflow: hidden; /* Garante que nada ultrapasse a box */
+}
+
+.pokemon-item:hover {
+  transform: scale(1.05);
+  /* Zoom no hover */
 }
 
 .pokemon-price {
   font-size: 0.9rem;
-  font-weight: bold; /* Negrito */
-  color: #000; /* Preto */
-  margin: 0.2rem 0; /* Espaço entre o preço e outros elementos */
-  text-align: center;
-}
-
-.pokemon-item:hover {
-  transform: scale(1.05); /* Efeito de zoom */
+  font-weight: bold;
+  color: #000;
+  margin: 0.1rem 0;
+  position: relative;
+  top: -10px;
+  /* Move o preço para cima */
 }
 
 .pokemon-id {
@@ -48,22 +56,31 @@
   font-size: 0.8rem;
   font-weight: bold;
   color: #fff;
-  opacity: 0.8;
 }
 
 .pokemon-image {
-  width: 80%;
-  max-height: 90px; /* Limita a altura da imagem */
-  margin: 0 auto;
-  object-fit: contain; /* Mantém proporções */
+  width: 100%;
+  /* Faz a imagem ocupar toda a largura do container */
+  height: auto;
+  /* Mantém a proporção */
+  max-height: 140px;
+  /* Limita a altura máxima da imagem */
+  display: block;
+  /* Garante que a imagem seja renderizada corretamente */
+  margin: auto;
+  /* Centraliza a imagem no container */
 }
 
 .pokemon-name {
   font-size: 1rem;
-  font-weight: bold; /* Negrito */
+  font-weight: bold;
   text-transform: capitalize;
-  color: #000; /* Preto */
-  margin: 0.2rem 0;
+  color: #000;
+  margin: 0.1rem 0;
+  /* Reduz o espaçamento de cima a baixo */
+  position: relative;
+  top: -5px;
+  /* Move o nome para cima */
 }
 
 .info-icon {
@@ -73,6 +90,7 @@
   background-color: #fff;
   color: #333;
   border-radius: 50%;
+  /* Ícone circular */
   width: 20px;
   height: 20px;
   display: flex;
@@ -80,65 +98,90 @@
   justify-content: center;
   font-size: 0.8rem;
   cursor: pointer;
-  text-decoration: none;
 }
 
-.search-input{
-  position:absolute;
+.search-input {
+  position: absolute;
   top: 2rem;
-  right: 2rem; 
-  width: 300px; 
-  padding: 0.75rem; 
-  margin-bottom: 2rem; 
-  margin-left: 81rem;
+  right: 2rem;
+  width: 300px;
+  padding: 0.75rem;
+  margin-bottom: 2rem;
   font-size: 0.9rem;
+  border: 2px solid #ccc;
+  /* Borda leve */
+  border-radius: 8px;
+  /* Bordas arredondadas */
+  background-color: #fff;
+  /* Fundo branco */
+  color: #333;
+  /* Texto preto */
+  outline: none;
+  /* Remove o contorno padrão */
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  /* Azul no foco */
 }
 
 .counter {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem; /* Espaço entre os botões e o número */
-  margin-top: 0.5rem;
-  padding: 0.2rem 0.4rem; /* Espaço ao redor dos botões e número */
-  background-color: rgba(255, 255, 255, 0.5); /* Fundo branco meio opaco */
-  border-radius: 20px; /* Bordas arredondadas */
-  width: fit-content; /* Ajusta ao tamanho do conteúdo */
-  margin-left: auto; /* Centraliza horizontalmente no container */
-  margin-right: auto; /* Centraliza horizontalmente no container */
+  gap: 0.4rem;
+  margin: 0 auto;
+  padding: 0.2rem 0.4rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  width: auto;
+  max-width: 90%;
+  margin-top: -5px;
+  /* Ajusta o contador mais próximo */
 }
 
 .counter button {
-  background-color: #ff4d4d; /* Vermelho mais forte */
-  color: #fff; /* Texto branco */
+  background-color: #ff4d4d;
+  /* Vermelho */
+  color: #fff;
   border: none;
-  border-radius: 50%; /* Botões redondos */
-  width: 30px; /* Largura fixa */
-  height: 30px; /* Altura fixa */
-  font-size: 1rem; /* Tamanho do texto */
+  border-radius: 50%;
+  /* Botões redondos */
+  width: 25px;
+  /* Tamanho reduzido */
+  height: 25px;
+  /* Altura reduzida */
+  font-size: 0.9rem;
+  /* Texto menor */
   font-weight: bold;
   cursor: pointer;
 }
 
 .counter button:hover {
-  background-color: #e60000; /* Vermelho mais escuro no hover */
-  transform: scale(1.1); /* Leve efeito de zoom */
+  background-color: #e60000;
+  /* Vermelho escuro */
 }
 
 .counter span {
   font-size: 0.9rem;
   font-weight: bold;
-  color: #333; /* Texto preto */
+  color: #333;
+  /* Preto */
   width: 20px;
+  /* Largura ajustada */
   text-align: center;
+  /* Centraliza o texto */
 }
 
 .cart-icon {
   position: fixed;
-  bottom: 20px; /* Posiciona o botão próximo à parte inferior */
-  right: 20px; /* Posiciona o botão no lado direito */
+  bottom: 20px;
+  /* Margem inferior */
+  right: 20px;
+  /* Margem direita */
   background-color: #007bff;
   border-radius: 50%;
+  /* Botão redondo */
   width: 50px;
   height: 50px;
   display: flex;
@@ -148,7 +191,7 @@
 }
 
 .cart-icon:hover {
-  background-color: #0056b3; /* Azul mais escuro no hover */
+  background-color: #0056b3;
 }
 
 .cart-bubble {
@@ -156,10 +199,13 @@
   top: 5px;
   right: 5px;
   background-color: #ff4d4d;
+  /* Vermelho */
   color: #fff;
+  /* Texto branco */
   font-size: 0.8rem;
   font-weight: bold;
   border-radius: 50%;
+  /* Bolha redonda */
   width: 20px;
   height: 20px;
   display: flex;
@@ -169,16 +215,17 @@
 
 .cart-popup {
   position: fixed;
-  bottom: px; /* Ajustado para ficar mais acima */
-  right: 20px; /* Posição no lado direito */
-  background-color: #fff;
-  width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px; /* Arredonda os cantos */
-  padding: 1rem;
+  bottom: 100px; /* Posicionado acima do ícone */
+  right: 20px; /* Alinhado à direita */
+  background-color: #fff; /* Fundo branco */
+  width: 350px; /* Aumenta a largura */
+  max-height: 400px; /* Altura máxima */
+  overflow-y: auto; /* Habilita rolagem vertical */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  border-radius: 10px; /* Bordas arredondadas */
+  padding: 1rem; /* Espaçamento interno */
 }
+
 
 .cart-popup h3 {
   margin: 0;
@@ -190,28 +237,27 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 .cart-item {
   display: flex;
-  justify-content: space-between; /* Espaça os elementos */
+  justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0; /* Espaço vertical entre itens */
-  border-bottom: 1px solid #ddd; /* Linha divisória entre itens */
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
 }
 
 .cart-item-left {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Espaço entre imagem e nome */
+  gap: 0.5rem;
 }
 
 .cart-item-image {
   width: 40px;
   height: 40px;
-  object-fit: contain; /* Mantém proporções */
+  object-fit: contain;
+  /* Mantém proporções */
 }
 
 .cart-item-name {
@@ -223,39 +269,37 @@
 .cart-item-controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Espaço entre botões e contador */
+  gap: 0.5rem;
 }
 
 .cart-item-controls button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.cart-item-controls button:hover {
-  background-color: #0056b3;
-}
-
-.cart-item-controls button {
-  background-color: #ff4d4d; /* Vermelho forte */
+  background-color: #ff4d4d;
   color: #fff;
   border: none;
-  border-radius: 50%; /* Botões redondos */
+  border-radius: 50%;
+  /* Botões redondos */
   width: 30px;
   height: 30px;
   font-size: 0.8rem;
   cursor: pointer;
 }
 
+.cart-item-controls button:hover {
+  background-color: #e60000;
+}
+
 .cart-item-price {
   font-size: 1rem;
   font-weight: bold;
   color: #555;
-  margin-right: 1rem; /* Espaço entre preço e controles */
+  margin-right: 1rem;
+}
+
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
 }
 
 .cart-total {
@@ -266,30 +310,6 @@
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
-  cursor: default; /* Não clicável */
-}
-
-
-.close-cart {
-  margin-top: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem;
-  width: 100%;
-  cursor: pointer;
-}
-
-.cart-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 1rem;
-}
-
-.close-cart:hover {
-  background-color: #0056b3;
 }
 
 .checkout-button {
@@ -301,10 +321,9 @@
   border-radius: 5px;
   padding: 0.5rem 1rem;
   text-decoration: none;
-  text-align: center;
   cursor: pointer;
 }
 
 .checkout-button:hover {
-  background-color: #218838; /* Verde mais escuro no hover */
+  background-color: #0056b3;
 }

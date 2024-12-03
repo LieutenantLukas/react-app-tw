@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Pokemons from './components/Pokemons';
 import Contact from './components/Contact';
 import PokemonDetails from './components/PokemonDetails'; // Importa a página de detalhes
+import Checkout from './components/Checkout';
 import './styles/App.css';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/pokemons" element={<Pokemons />} />
         <Route path="/pokemons/:id" element={<PokemonDetails />} /> {/* Rota para detalhes */}
         <Route path="/contact" element={<Contact />} />
+        <Route path="/checkout" element={<Checkout />} /> {/* Rota para Checkout */}
       </Routes>
     </Router>
   );
