@@ -18,6 +18,7 @@ const App = () => {
         <Route path="/pokemons/:id" element={<PokemonDetails />} /> {/* Rota para detalhes */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} /> {/* Rota para Checkout */}
+        
       </Routes>
     </Router>
   );
