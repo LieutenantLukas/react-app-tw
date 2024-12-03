@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Para redirecionar às páginas de de
 import '../styles/Pokemons.css'; // Importa os estilos para este componente
 import { FaShoppingCart } from 'react-icons/fa'; // Ícone do carrinho
 
-// Mapeia os tipos de Pokémon para cores específicas
+// Mapeia os tipos de Pokémon para cores específicas para o site ter vibe pokemon
 const typeColors = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -23,6 +23,27 @@ const typeColors = {
   dark: '#705746',
   steel: '#B7B7CE',
   fairy: '#D685AD',
+};
+
+const typePrices = {
+  normal: 1,
+  fire: 1,
+  water: 1,
+  electric: 1,
+  grass: 1,
+  ice: 1,
+  fighting: 1,
+  poison: 1,
+  ground: 1,
+  flying: 1,
+  psychic: 1,
+  bug: 1,
+  rock: 1,
+  ghost: 1,
+  dragon: 1,
+  dark: 1,
+  steel: 1,
+  fairy: 1,
 };
 
 const Pokemons = () => {
@@ -107,6 +128,9 @@ const Pokemons = () => {
               pokemon.id.toString().includes(searchTerm)
             ) {
               const primaryType = pokemon.types[0].type.name;
+              const weight = pokemon.weight / 10; // Peso em kg senao fica em gramas e da valores tipo post inflation
+              const basePrice = typePrices[primaryType] || 1; // Preço base por tipo
+              const totalPrice = (basePrice * weight).toFixed(2); // Preço total com base no peso
               const backgroundColor = typeColors[primaryType];
               return (
                 <div
@@ -119,6 +143,7 @@ const Pokemons = () => {
                   <h3 className="pokemon-name">
                     {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                   </h3>
+                  <p className="pokemon-price">Preço: €{totalPrice}</p>
                   <div className="counter">
                     <button onClick={() => decrementCount(pokemon.id)}>-</button>
                     <span>{counts[pokemon.id]}</span>
@@ -143,6 +168,7 @@ const Pokemons = () => {
       </div>
 
       {/* Popup do Carrinho */}
+      {/* Popup do Carrinho */}
       {showCart && (
         <div className="cart-popup">
           <h3>Seu Carrinho</h3>
@@ -151,6 +177,11 @@ const Pokemons = () => {
               .filter(([id, count]) => count > 0)
               .map(([id, count]) => {
                 const pokemon = pokemons.find((poke) => poke.id === parseInt(id));
+                const primaryType = pokemon.types[0].type.name;
+                const weight = pokemon.weight / 10;
+                const basePrice = typePrices[primaryType] || 1;
+                const totalPrice = (basePrice * weight * count).toFixed(2);
+
                 return (
                   <li key={id} className="cart-item">
                     <div className="cart-item-left">
@@ -160,13 +191,18 @@ const Pokemons = () => {
                       </span>
                     </div>
                     <div className="cart-item-controls">
+                      <span className="cart-item-price">€{totalPrice}</span>
                       <button onClick={() => decrementCount(pokemon.id)}>-</button>
                       <span>{count}</span>
                       <button onClick={() => incrementCount(pokemon.id)}>+</button>
-                      <button onClick={() => setCounts((prevCounts) => ({
-                        ...prevCounts,
-                        [id]: 0,
-                      }))}>
+                      <button
+                        onClick={() =>
+                          setCounts((prevCounts) => ({
+                            ...prevCounts,
+                            [id]: 0,
+                          }))
+                        }
+                      >
                         X
                       </button>
                     </div>
@@ -174,8 +210,27 @@ const Pokemons = () => {
                 );
               })}
           </ul>
+          {/* Botões no rodapé */}
+          <div className="cart-footer">
+            <button className="cart-total">
+              Total: €{Object.entries(counts)
+                .filter(([id, count]) => count > 0)
+                .reduce((sum, [id, count]) => {
+                  const pokemon = pokemons.find((poke) => poke.id === parseInt(id));
+                  const primaryType = pokemon.types[0].type.name;
+                  const weight = pokemon.weight / 10;
+                  const basePrice = typePrices[primaryType] || 1;
+                  return sum + basePrice * weight * count;
+                }, 0)
+                .toFixed(2)}
+            </button>
+            <Link to="/checkout" className="checkout-button">
+              Pagar
+            </Link>
+          </div>
         </div>
       )}
+
     </div>
   );
 };
