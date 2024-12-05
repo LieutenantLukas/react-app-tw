@@ -2,43 +2,46 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
 import '../styles/Checkout.css';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
 
 const Checkout = () => {
   const { cart, clearCart, getTotalPrice, pokemonData } = useCart();
 
   const handlePayment = () => {
-    // Comeca o pdf com a biblioteca
     const doc = new jsPDF();
-    
-    // Mete titulo
-    doc.setFontSize(20);
-    doc.text('Recibo de Compra', 10, 20);
-    
-    // Mete os pokemons do carrinho
     let yPosition = 30;
+
+    doc.setFontSize(18);
+    doc.text('Recibo', 105, 20, { align: 'center' });
+
+    doc.setFontSize(12);
+
     Object.entries(cart)
       .filter(([id, count]) => count > 0)
       .forEach(([id, count]) => {
         const pokemon = pokemonData[id];
-        if (pokemon) {
-          const name = `${count}x ${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}`;
-          const price = `${getTotalPrice(id, count).toFixed(2)}€`;
-          doc.text(`${name} - ${price}`, 10, yPosition);
-          yPosition += 10; // Mete um espaco entre cada pokemon
-        }
+        if (!pokemon) return;
+
+        const total = getTotalPrice(id, count).toFixed(2);
+        
+        const img = new Image();
+        img.src = pokemon.sprites.front_default;
+        doc.addImage(img, 'PNG', 10, yPosition - 10, 15, 15);
+        doc.text(
+          `${count}x ${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} - ${total}€`,
+          30,
+          yPosition
+        );
+        yPosition += 20;
       });
 
-    // Mete o total do carrinho
-    doc.setFontSize(16);
-    doc.text(`Pago: ${Object.entries(cart)
+    const totalPrice = Object.entries(cart)
       .reduce((sum, [id, count]) => sum + getTotalPrice(id, count), 0)
-      .toFixed(2)}€`, 10, yPosition + 10);
+      .toFixed(2);
 
-    // Guarda o pdf
-    doc.save('Recibo_de_Compra.pdf');
+    doc.text(`Total: ${totalPrice}€`, 10, yPosition + 10);
 
-    // Limpa o carrinho
+    doc.save('receipt.pdf');
     clearCart();
   };
 
@@ -70,7 +73,7 @@ const Checkout = () => {
                   </span>
                 </div>
                 <span className="checkout-item-price">
-                  {(getTotalPrice(id, count)).toFixed(2)}€
+                  {getTotalPrice(id, count).toFixed(2)}€
                 </span>
               </li>
             );
