@@ -28,7 +28,7 @@ const typePrices = {
   fairy: 1.3,
 };
 
-// Função redutora para gerenciar o estado do carrinho
+
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'SET_POKEMON_DATA':
@@ -53,12 +53,17 @@ const cartReducer = (state, action) => {
       const updatedCart = { ...state.cart };
       delete updatedCart[action.payload.id];
       return { ...state, cart: updatedCart };
+    case 'CLEAR_CART':
+      return {
+        ...state,
+        cart: {}, // Limpa o carrinho
+      };
     default:
       return state;
   }
 };
 
-// Criar contexto
+// Cria Context para o carrinho
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -67,6 +72,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = (id) => dispatch({ type: 'ADD_TO_CART', payload: { id } });
   const removeFromCart = (id) => dispatch({ type: 'REMOVE_FROM_CART', payload: { id } });
   const clearCartItem = (id) => dispatch({ type: 'CLEAR_CART_ITEM', payload: { id } });
+  const clearCart = () => dispatch({ type: 'CLEAR_CART' });
   const setPokemonData = (data) =>
     dispatch({ type: 'SET_POKEMON_DATA', payload: data });
 
@@ -93,6 +99,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         clearCartItem,
+        clearCart,
         setPokemonData,
         getTotalPrice,
         calculateCartTotal,

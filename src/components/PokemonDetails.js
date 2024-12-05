@@ -42,7 +42,7 @@ const PokemonDetails = () => {
     } catch (error) {
       console.error('Erro ao carregar detalhes do Pokémon:', error);
       setError(true);
-      setLoading(false); // Caso der erro, renderiza a mensagem de erro
+      setLoading(false); // Caso der erro, mostra a mensagem de erro
     }
   };
 
