@@ -32,7 +32,7 @@ const Pokemons = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCart, setShowCart] = useState(false);
 
-  const { cart, addToCart, removeFromCart, clearCartItem, getTotalPrice, setPokemonData } = useCart(); // Mudei a logica de counter de pokemons e carrinho para o CartContext para que possa ser compartilhada entre os paginas
+  const { cart, addToCart, removeFromCart, clearCartItem, getTotalPrice, setPokemonData } = useCart();
 
   const fetchPokemons = async () => {
     try {
@@ -41,15 +41,21 @@ const Pokemons = () => {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
       const data = await response.json();
-      const detailsPromises = data.results.map((pokemon) =>
-        fetch(pokemon.url).then((res) => res.json())
-      );
+
+      // Detalhes dos Pokémons
+      const detailsPromises = data.results.map(async (pokemon) => {
+        const details = await fetch(pokemon.url).then((res) => res.json());
+        const species = await fetch(details.species.url).then((res) => res.json()); // chamar aqui species para conseguir o is_legendary
+        return { ...details, is_legendary: species.is_legendary }; // retornar is_legendary com os detalhes
+      });
+
       const details = await Promise.all(detailsPromises);
 
       const formattedData = details.map((pokemon) => ({
         id: pokemon.id,
         weight: pokemon.weight,
         types: pokemon.types,
+        is_legendary: pokemon.is_legendary, // adicionar is_legendary ao objeto pokemon
         ...pokemon,
       }));
 

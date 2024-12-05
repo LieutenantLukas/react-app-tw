@@ -2,8 +2,8 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 // Estado inicial do carrinho
 const initialState = {
-  cart: {}, // Armazena os itens no carrinho
-  pokemonData: {}, // Dados detalhados dos Pokémons
+  cart: {}, // Armazena a quantidade de cada Pokémon no carrinho
+  pokemonData: {}, // Armazena os dados dos Pokémon
 };
 
 // Preços baseados nos tipos de Pokémon
@@ -28,7 +28,10 @@ const typePrices = {
   fairy: 1.3,
 };
 
+// Multiplicador para Pokémon lendários
+const LEGENDARY_MULTIPLIER = 10;
 
+// Função redutora(react) para manipular o estado do carrinho de compras em vez de varios useState
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'SET_POKEMON_DATA':
@@ -54,16 +57,13 @@ const cartReducer = (state, action) => {
       delete updatedCart[action.payload.id];
       return { ...state, cart: updatedCart };
     case 'CLEAR_CART':
-      return {
-        ...state,
-        cart: {}, // Limpa o carrinho
-      };
+      return { ...state, cart: {} };
     default:
       return state;
   }
 };
 
-// Cria Context para o carrinho
+// Criar carrinho 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -82,7 +82,12 @@ export const CartProvider = ({ children }) => {
     const primaryType = pokemon.types[0]?.type?.name;
     const typePrice = typePrices[primaryType] || 1;
     const weightInKg = pokemon.weight / 10; // Peso em kg
-    return typePrice * weightInKg * quantity;
+
+    // Tentativa de uso de `is_legendary` para determinar se um Pokémon é lendário
+    const isLegendary = pokemon.is_legendary;
+
+    // Calcular o preço total
+    return typePrice * weightInKg * quantity * (isLegendary ? LEGENDARY_MULTIPLIER : 1);
   };
 
   const calculateCartTotal = () =>

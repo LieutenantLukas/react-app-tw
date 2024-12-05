@@ -31,7 +31,7 @@ const Checkout = () => {
 
     // Mete o total do carrinho
     doc.setFontSize(16);
-    doc.text(`Total: ${Object.entries(cart)
+    doc.text(`Pago: ${Object.entries(cart)
       .reduce((sum, [id, count]) => sum + getTotalPrice(id, count), 0)
       .toFixed(2)}€`, 10, yPosition + 10);
 
