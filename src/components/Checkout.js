@@ -41,7 +41,7 @@ const Checkout = () => {
 
     doc.text(`Total: ${totalPrice}€`, 10, yPosition + 10);
 
-    doc.save('receipt.pdf');
+    doc.save('Recibo_de_Compra.pdf');
     clearCart();
   };
 
