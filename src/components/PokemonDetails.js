@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Para obter o ID da URL e retornar à lista
-import '../styles/PokemonDetails.css'; // Importa os estilos específicos para esta página
+import { useParams, Link } from 'react-router-dom'; // Para obter o ID do URL e retornar à lista
+import '../styles/PokemonDetails.css';
 
 const typeColors = {
   normal: '#A8A77A',
@@ -24,54 +24,67 @@ const typeColors = {
 };
 
 const PokemonDetails = () => {
-  const { id } = useParams(); // Obtém o ID do Pokémon a partir da URL
+  const { id } = useParams(); // Obtém o ID do Pokémon a partir do URL
   const [pokemon, setPokemon] = useState(null); // Armazena os detalhes do Pokémon
-  const [loading, setLoading] = useState(true); // Controla o status de carregamento
+  const [loading, setLoading] = useState(true); // Loading enquanto os dados são carregados
   const [error, setError] = useState(false); // Controla se ocorreu um erro
 
   // Função para buscar os detalhes do Pokémon
   const fetchPokemonDetails = async () => {
     try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`); // Requisição para o Pokémon específico
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`); // Requisita o Pokémon específico
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
       const data = await response.json();
       setPokemon(data); // Atualiza o estado com os detalhes
-      setLoading(false); // Finaliza o carregamento
+      setLoading(false); // Da greenlight para renderizar os detalhes
     } catch (error) {
       console.error('Erro ao carregar detalhes do Pokémon:', error);
       setError(true);
-      setLoading(false); // Finaliza o carregamento mesmo em caso de erro
+      setLoading(false); // Caso der erro, renderiza a mensagem de erro
     }
   };
 
-  // Hook para buscar os dados quando o componente é montado
+  // Hook para buscar os dados do Pokémon especificado
   useEffect(() => {
     fetchPokemonDetails();
   }, [id]);
 
   // Renderiza mensagens de status
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p>A carregar...</p>;
   if (error) return <p>Erro ao carregar Pokémon. Tente novamente mais tarde.</p>;
 
   // Renderiza os detalhes do Pokémon quando os dados são carregados
   return (
-    <div className="pokemon-details"
-      style={{ backgroundColor: typeColors[pokemon.types[0].type.name] || '#fff' }}>
+    <div
+      className="pokemon-details"
+      style={{
+        backgroundColor: typeColors[pokemon.types[0].type.name] || '#fff',
+      }}
+    >
       <h1>{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h1>
       <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-      <p><strong>ID:</strong> #{pokemon.id}</p>
-      <p><strong>Peso:</strong> {pokemon.weight / 10} kg</p>
-      <p><strong>Tipos:</strong></p>
+      <p>
+        <strong>ID:</strong> #{pokemon.id}
+      </p>
+      <p>
+        <strong>Peso:</strong> {(pokemon.weight / 10).toFixed(1)} kg
+      </p>
+      <p>
+        <strong>Tipos:</strong>
+      </p>
       <ul>
         {pokemon.types.map((type) => (
-          <li key={type.type.name}>{type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}</li>
+          <li key={type.type.name}>
+            {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
+          </li>
         ))}
       </ul>
-      <a href="/pokemons" className="back-button">Voltar</a>
+      <Link to="/pokemons" className="back-button">
+        Voltar
+      </Link>
     </div>
-
   );
 };
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';
+import { useCart } from './CartContext';
+import { FaShoppingCart, FaTrash } from 'react-icons/fa';
 import '../styles/Pokemons.css';
 
-// Definições de cores baseadas nos tipos de Pokémon
 const typeColors = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -25,37 +25,15 @@ const typeColors = {
   fairy: '#D685AD',
 };
 
-// Preços baseados nos tipos de Pokémon
-const typePrices = {
-  normal: 1,
-  fire: 1.5,
-  water: 1.2,
-  electric: 2,
-  grass: 0.7,
-  ice: 1.7,
-  fighting: 2,
-  poison: 3,
-  ground: 0.5,
-  flying: 1,
-  psychic: 2.5,
-  bug: 0.25,
-  rock: 0.25,
-  ghost: 7,
-  dragon: 10,
-  dark: 1,
-  steel: 2,
-  fairy: 1.3,
-};
-
 const Pokemons = () => {
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [counts, setCounts] = useState({});
   const [showCart, setShowCart] = useState(false);
 
-  // Função para buscar os dados da API e processar os Pokémon
+  const { cart, addToCart, removeFromCart, clearCartItem, getTotalPrice, setPokemonData } = useCart(); // Mudei a logica de counter de pokemons e carrinho para o CartContext para que possa ser compartilhada entre os paginas
+
   const fetchPokemons = async () => {
     try {
       const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=252');
@@ -63,20 +41,26 @@ const Pokemons = () => {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
       const data = await response.json();
-
-      // Detalhes adicionais de cada Pokémon
       const detailsPromises = data.results.map((pokemon) =>
         fetch(pokemon.url).then((res) => res.json())
       );
       const details = await Promise.all(detailsPromises);
 
-      // Inicializar o contador de cada Pokémon com 0
-      const initialCounts = details.reduce((counter, pokemon) => {
-        counter[pokemon.id] = 0;
-        return counter;
-      }, {});
-      setCounts(initialCounts);
-      setPokemons(details);
+      const formattedData = details.map((pokemon) => ({
+        id: pokemon.id,
+        weight: pokemon.weight,
+        types: pokemon.types,
+        ...pokemon,
+      }));
+
+      setPokemons(formattedData);
+      setPokemonData(
+        formattedData.reduce((acc, pokemon) => {
+          acc[pokemon.id] = pokemon;
+          return acc;
+        }, {})
+      );
+
       setLoading(false);
     } catch (error) {
       console.error('Erro ao buscar Pokémon:', error);
@@ -85,28 +69,10 @@ const Pokemons = () => {
     }
   };
 
-  // Executar a busca de Pokémon quando o componente é montado
   useEffect(() => {
     fetchPokemons();
   }, []);
 
-  // Incrementa o contador do Pokémon com ID especificado
-  const incrementCount = (id) => {
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: prevCounts[id] + 1,
-    }));
-  };
-
-  // Decrementa o contador do Pokémon com ID especificado
-  const decrementCount = (id) => {
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: Math.max(prevCounts[id] - 1, 0),
-    }));
-  };
-
-  // Alterna a visibilidade do popup do carrinho
   const toggleCart = () => {
     setShowCart((prev) => !prev);
   };
@@ -114,7 +80,6 @@ const Pokemons = () => {
   return (
     <div className="pokemons">
       <h1>Pokémons Disponíveis</h1>
-      {/* Barra de busca para filtrar Pokémon */}
       <input
         type="text"
         placeholder="Procure por nome ou ID"
@@ -135,11 +100,8 @@ const Pokemons = () => {
               searchTerm === '' ||
               pokemon.id.toString().includes(searchTerm)
             ) {
-              const primaryType = pokemon.types[0].type.name;
-              const weight = pokemon.weight / 10; // Peso em kg
-              const basePrice = typePrices[primaryType] || 1;
-              const totalPrice = (basePrice * weight).toFixed(2);
-              const backgroundColor = typeColors[primaryType];
+              const primaryType = pokemon.types[0]?.type?.name;
+              const backgroundColor = typeColors[primaryType] || '#f4f4f4';
 
               return (
                 <div
@@ -155,11 +117,13 @@ const Pokemons = () => {
                   <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
                     I
                   </Link>
-                  <p className="pokemon-price">Preço: {totalPrice}€</p>
+                  <p className="pokemon-price">
+                    Preço: {getTotalPrice(pokemon.id).toFixed(2)}€
+                  </p>
                   <div className="counter">
-                    <button onClick={() => decrementCount(pokemon.id)}>-</button>
-                    <span>{counts[pokemon.id]}</span>
-                    <button onClick={() => incrementCount(pokemon.id)}>+</button>
+                    <button onClick={() => removeFromCart(pokemon.id)}>-</button>
+                    <span>{cart[pokemon.id] || 0}</span>
+                    <button onClick={() => addToCart(pokemon.id)}>+</button>
                   </div>
                 </div>
               );
@@ -168,27 +132,22 @@ const Pokemons = () => {
         </div>
       )}
 
-      {/* Ícone do Carrinho */}
       <div className="cart-icon" onClick={toggleCart}>
         <FaShoppingCart size={30} color="white" />
         <div className="cart-bubble">
-          {Object.values(counts).reduce((sum, count) => sum + count, 0)}
+          {Object.values(cart).reduce((sum, count) => sum + count, 0)}
         </div>
       </div>
 
-      {/* Popup do Carrinho */}
       {showCart && (
         <div className="cart-popup">
           <h3>Carrinho</h3>
           <ul>
-            {Object.entries(counts)
+            {Object.entries(cart)
               .filter(([id, count]) => count > 0)
               .map(([id, count]) => {
                 const pokemon = pokemons.find((poke) => poke.id === parseInt(id));
-                const primaryType = pokemon.types[0].type.name;
-                const weight = pokemon.weight / 10;
-                const basePrice = typePrices[primaryType] || 1;
-                const totalPrice = (basePrice * weight * count).toFixed(2);
+                if (!pokemon) return null;
 
                 return (
                   <li key={id} className="cart-item">
@@ -199,19 +158,14 @@ const Pokemons = () => {
                       </span>
                     </div>
                     <div className="cart-item-controls">
-                      <span className="cart-item-price">{totalPrice}€</span>
-                      <button onClick={() => decrementCount(pokemon.id)}>-</button>
+                      <span className="cart-item-price">
+                        {getTotalPrice(id, count).toFixed(2)}€
+                      </span>
+                      <button onClick={() => removeFromCart(id)}>-</button>
                       <span>{count}</span>
-                      <button onClick={() => incrementCount(pokemon.id)}>+</button>
-                      <button
-                        onClick={() =>
-                          setCounts((prevCounts) => ({
-                            ...prevCounts,
-                            [id]: 0,
-                          }))
-                        }
-                      >
-                        X
+                      <button onClick={() => addToCart(id)}>+</button>
+                      <button onClick={() => clearCartItem(id)}>
+                        <FaTrash />
                       </button>
                     </div>
                   </li>
@@ -220,15 +174,8 @@ const Pokemons = () => {
           </ul>
           <div className="cart-footer">
             <button className="cart-total">
-              Total: {Object.entries(counts)
-                .filter(([id, count]) => count > 0)
-                .reduce((sum, [id, count]) => {
-                  const pokemon = pokemons.find((poke) => poke.id === parseInt(id));
-                  const primaryType = pokemon.types[0].type.name;
-                  const weight = pokemon.weight / 10;
-                  const basePrice = typePrices[primaryType] || 1;
-                  return sum + basePrice * weight * count;
-                }, 0)
+              Total: {Object.entries(cart)
+                .reduce((sum, [id, count]) => sum + getTotalPrice(id, count), 0)
                 .toFixed(2)}€
             </button>
             <Link to="/checkout" className="checkout-button">
