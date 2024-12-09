@@ -2,31 +2,24 @@
   text-align: center;
   padding: 2rem;
   background-color: #fdfd96;
-  /* Fundo amarelo suave */
   position: relative;
 }
 
 .pokemon-list {
   display: flex;
   flex-wrap: wrap;
-  /* Permite quebra de linha */
   gap: 1rem;
-  /* Espaçamento entre itens */
   justify-content: center;
-  /* Centraliza os itens */
 }
 
 .pokemon-item {
   position: relative;
   border: 3px solid #333;
-  /* Bordas padrão */
   border-radius: 8px;
   color: #fff;
-  /* Cor do texto */
   padding: 0.5rem;
   text-align: center;
   width: 150px;
-  /* Tamanho fixo */
   height: 220px;
   display: flex;
   flex-direction: column;
@@ -36,7 +29,6 @@
 
 .pokemon-item:hover {
   transform: scale(1.05);
-  /* Zoom no hover */
 }
 
 .pokemon-price {
@@ -46,7 +38,6 @@
   margin: 0.1rem 0;
   position: relative;
   top: -10px;
-  /* Move o preço para cima */
 }
 
 .pokemon-id {
@@ -60,15 +51,10 @@
 
 .pokemon-image {
   width: 100%;
-  /* Faz a imagem ocupar toda a largura do container */
   height: auto;
-  /* Mantém a proporção */
   max-height: 140px;
-  /* Limita a altura máxima da imagem */
   display: block;
-  /* Garante que a imagem seja renderizada corretamente */
   margin: auto;
-  /* Centraliza a imagem no container */
 }
 
 .pokemon-name {
@@ -77,31 +63,28 @@
   text-transform: capitalize;
   color: #000;
   margin: 0.1rem 0;
-  /* Reduz o espaçamento de cima a baixo */
   position: relative;
   top: -5px;
-  /* Move o nome para cima */
 }
 
 .info-icon {
   position: absolute;
-  top: 10px; /* Fixa o ícone no canto superior direito */
+  top: 10px;
   right: 10px;
-  background-color: #fff; /* Fundo branco */
-  color: #333; /* Cor do texto */
-  border-radius: 50%; /* Bordas arredondadas */
-  font-size: 1rem; /* Tamanho do texto */
-  width: 20px; /* Largura do ícone */
-  height: 20px; /* Altura do ícone */
+  background-color: #fff;
+  color: #333;
+  border-radius: 50%;
+  font-size: 1rem;
+  width: 20px;
+  height: 20px;
   display: flex;
-  align-items: center; /* Centraliza o texto verticalmente */
-  justify-content: center; /* Centraliza o texto horizontalmente */
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-  text-decoration: none; /* Remove o sublinhado */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para destaque */
-  opacity: 0.9; /* Leve transparência */
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease; /* Animação no hover */
 }
 
 .search-input {
@@ -113,20 +96,14 @@
   margin-bottom: 2rem;
   font-size: 0.9rem;
   border: 2px solid #ccc;
-  /* Borda leve */
   border-radius: 8px;
-  /* Bordas arredondadas */
   background-color: #fff;
-  /* Fundo branco */
   color: #333;
-  /* Texto preto */
   outline: none;
-  /* Remove o contorno padrão */
 }
 
 .search-input:focus {
   border-color: #007bff;
-  /* Azul no foco */
 }
 
 .counter {
@@ -141,22 +118,16 @@
   width: auto;
   max-width: 90%;
   margin-top: -5px;
-  /* Ajusta o contador mais próximo */
 }
 
 .counter button {
   background-color: #ff4d4d;
-  /* Vermelho */
   color: #fff;
   border: none;
   border-radius: 50%;
-  /* Botões redondos */
   width: 25px;
-  /* Tamanho reduzido */
   height: 25px;
-  /* Altura reduzida */
   font-size: 0.9rem;
-  /* Texto menor */
   font-weight: bold;
   cursor: pointer;
  
@@ -165,30 +136,23 @@
 
 .counter button:hover {
   background-color: #e60000;
-  /* Vermelho escuro */
 }
 
 .counter span {
   font-size: 0.9rem;
   font-weight: bold;
   color: #333;
-  /* Preto */
   width: 20px;
-  /* Largura ajustada */
   text-align: center;
-  /* Centraliza o texto */
   
 }
 
 .cart-icon {
   position: fixed;
   bottom: 20px;
-  /* Margem inferior */
   right: 20px;
-  /* Margem direita */
   background-color: #007bff;
   border-radius: 50%;
-  /* Botão redondo */
   width: 50px;
   height: 50px;
   display: flex;
@@ -206,13 +170,10 @@
   top: 5px;
   right: 5px;
   background-color: #ff4d4d;
-  /* Vermelho */
   color: #fff;
-  /* Texto branco */
   font-size: 0.8rem;
   font-weight: bold;
   border-radius: 50%;
-  /* Bolha redonda */
   width: 20px;
   height: 20px;
   display: flex;
@@ -222,15 +183,15 @@
 
 .cart-popup {
   position: fixed;
-  bottom: 100px; /* Posicionado acima do ícone */
-  right: 20px; /* Alinhado à direita */
-  background-color: #fff; /* Fundo branco */
-  width: 350px; /* Aumenta a largura */
-  max-height: 400px; /* Altura máxima */
-  overflow-y: auto; /* Habilita rolagem vertical */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-  border-radius: 10px; /* Bordas arredondadas */
-  padding: 1rem; /* Espaçamento interno */
+  bottom: 100px;
+  right: 20px;
+  background-color: #fff;
+  width: 350px;
+  max-height: 400px; 
+  overflow-y: auto; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  border-radius: 10px;
+  padding: 1rem;
 }
 
 .cart-popup h3 {
@@ -263,7 +224,6 @@
   width: 40px;
   height: 40px;
   object-fit: contain;
-  /* Mantém proporções */
 }
 
 .cart-item-name {

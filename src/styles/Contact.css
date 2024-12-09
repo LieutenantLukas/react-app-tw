@@ -68,16 +68,14 @@ label {
   outline: none;
 }
 
-/* Style for the textarea (Mensagem field) */
 #mensagem {
   width: 90%;
-  height: 150px; /* Increase the height */
+  height: 150px; 
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  transition: border 0.3s ease;
 }
 
 #mensagem:focus {
@@ -85,7 +83,6 @@ label {
   outline: none;
 }
 
-/* Style for the submit button */
 #submit {
   width: 95%;
   padding: 12px;
@@ -95,7 +92,6 @@ label {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 #submit:hover {
