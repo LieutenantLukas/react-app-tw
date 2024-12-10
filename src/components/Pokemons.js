@@ -1,197 +1,170 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useCart } from './CartContext';
-import { FaShoppingCart, FaTrash } from 'react-icons/fa';
-import '../styles/Pokemons.css';
+import { useState, useEffect } from 'react';
+import '../styles/Home.css';
 
-const typeColors = {
-  normal: '#A8A77A',
-  fire: '#EE8130',
-  water: '#6390F0',
-  electric: '#F7D02C',
-  grass: '#7AC74C',
-  ice: '#96D9D6',
-  fighting: '#C22E28',
-  poison: '#A33EA1',
-  ground: '#E2BF65',
-  flying: '#A98FF3',
-  psychic: '#F95587',
-  bug: '#A6B91A',
-  rock: '#B6A136',
-  ghost: '#735797',
-  dragon: '#6F35FC',
-  dark: '#705746',
-  steel: '#B7B7CE',
-  fairy: '#D685AD',
+// Fetching the first 252 Pokémon names and details
+const fetchPokemons = async () => {
+  try {
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=252');
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    const data = await response.json();
+
+    // Return only the names of the Pokémon
+    return data.results.map((pokemon) => pokemon.name);
+  } catch (error) {
+    console.error("Failed to fetch Pokémon data:", error);
+    return [];
+  }
 };
 
-const Pokemons = () => {
-  const [pokemons, setPokemons] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showCart, setShowCart] = useState(false);
+const Guessthatpokemon = () => {
+  return Math.floor(Math.random() * 252) + 1; // Generate a number from 1 to 252
+};
 
-  const { cart, addToCart, removeFromCart, clearCartItem, getTotalPrice, setPokemonData } = useCart();
+const fetchPokemon = async (pokemonId) => {
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    const data = await response.json();
+    return data; // Return the Pokémon data
+  } catch (error) {
+    console.error("Failed to fetch Pokémon data:", error);
+    return null;
+  }
+};
 
-  const fetchPokemons = async () => {
-    try {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=252');
-      if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
+const Home = () => {
+  const [pokemonId, setPokemonId] = useState(null);
+  const [pokemonData, setPokemonData] = useState(null);
+  const [guess, setGuess] = useState('');
+  const [remainingGuesses, setRemainingGuesses] = useState(3);
+  const [isGuessedCorrectly, setIsGuessedCorrectly] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [pokemonNames, setPokemonNames] = useState([]); // Stores fetched Pokémon names for autocomplete
+  const [suggestions, setSuggestions] = useState([]); // Stores filtered suggestions
+
+  // Fetch Pokémon names when the component mounts
+  useEffect(() => {
+    const getPokemonNames = async () => {
+      const names = await fetchPokemons();
+      setPokemonNames(names); // Save the fetched Pokémon names
+    };
+
+    getPokemonNames();
+    getNewPokemon();
+  }, []); // Empty dependency array ensures this runs once when the component mounts
+
+  // Function to get a new random Pokémon and set data
+  const getNewPokemon = async () => {
+    const randomPokemonId = Guessthatpokemon(); // Generate a random Pokémon ID
+    setPokemonId(randomPokemonId); // Update the state with new Pokémon ID
+    setRemainingGuesses(3); // Reset the guesses
+    setIsGuessedCorrectly(false); // Reset the guess state
+    setIsGameOver(false); // Reset game over state
+    setGuess(''); // Reset the guess input field
+    setSuggestions([]); // Clear suggestions
+
+    const data = await fetchPokemon(randomPokemonId); // Fetch new Pokémon data
+    setPokemonData(data); // Set the new Pokémon data
+  };
+
+  // Handle the "Adivinhar" button click
+  const handleGuess = () => {
+    if (isGameOver || isGuessedCorrectly) return; // Do nothing if game is over or guessed correctly
+
+    if (guess.toLowerCase() === pokemonData.name.toLowerCase()) {
+      setIsGuessedCorrectly(true); // Correct guess
+    } else {
+      if (remainingGuesses > 1) {
+        setRemainingGuesses(remainingGuesses - 1); // Incorrect guess, decrement remaining guesses
+      } else {
+        setIsGameOver(true); // No more guesses left, game over
       }
-      const data = await response.json();
+    }
+    setGuess(''); // Clear the input field after each guess
+  };
 
-      // Detalhes dos Pokémons
-      const detailsPromises = data.results.map(async (pokemon) => {
-        const details = await fetch(pokemon.url).then((res) => res.json());
-        const species = await fetch(details.species.url).then((res) => res.json()); // chamar aqui species para conseguir o is_legendary
-        return { ...details, is_legendary: species.is_legendary }; // retornar is_legendary com os detalhes
-      });
+  // Handle the input change and filter suggestions
+  const handleInputChange = (event) => {
+    const inputValue = event.target.value;
+    setGuess(inputValue);
 
-      const details = await Promise.all(detailsPromises);
-
-      const formattedData = details.map((pokemon) => ({
-        id: pokemon.id,
-        weight: pokemon.weight,
-        types: pokemon.types,
-        is_legendary: pokemon.is_legendary, // adicionar is_legendary ao objeto pokemon
-        ...pokemon,
-      }));
-
-      setPokemons(formattedData);
-      setPokemonData(
-        formattedData.reduce((acc, pokemon) => {
-          acc[pokemon.id] = pokemon;
-          return acc;
-        }, {})
-      );
-
-      setLoading(false);
-    } catch (error) {
-      console.error('Erro ao buscar Pokémon:', error);
-      setError(true);
-      setLoading(false);
+    if (inputValue) {
+      // Filter Pokémon names based on input value
+      const filteredSuggestions = pokemonNames
+        .filter((name) => name.toLowerCase().includes(inputValue.toLowerCase()))
+        .slice(0, 5); // Limit suggestions to 5 items
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
     }
   };
 
-  useEffect(() => {
-    fetchPokemons();
-  }, []);
-
-  const toggleCart = () => {
-    setShowCart((prev) => !prev);
+  // Handle the click event on a suggestion
+  const handleSuggestionClick = (suggestion) => {
+    setGuess(suggestion); // Set the input value to the clicked suggestion
+    setSuggestions([]); // Clear suggestions after selection
   };
 
   return (
-    <div className="pokemons">
-      <h1>Pokémons Disponíveis</h1>
-      <input
-        type="text"
-        placeholder="Procure por nome ou ID"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
-      />
+    <div className="home">
+      <h1>Bem-vindo ao Mercado Pokémon!</h1>
+      <p>A melhor carne de pokemon do mercado!</p>
+      <p>A carne vem toda congelada, para não estragar (pokemons de gelo vêm sem gelo)!</p>
 
-      {loading ? (
-        <p>A carregar...</p>
-      ) : error ? (
-        <p>Erro ao carregar Pokémon. Tente novamente mais tarde.</p>
+      {pokemonData ? (
+        <div>
+          <h2>{pokemonData.name}</h2>
+
+          <img
+            src={pokemonData.sprites.front_default}
+            alt={pokemonData.name}
+            className="pokemon-images"
+            style={{
+              filter: isGuessedCorrectly || isGameOver ? 'brightness(100%)' : 'brightness(50%)',
+            }}
+          />
+
+          {!isGameOver && !isGuessedCorrectly && remainingGuesses > 0 && (
+            <div>
+              <input
+                className="textboxpkmn"
+                placeholder="Adivinhe o Pokémon"
+                value={guess}
+                onChange={handleInputChange}
+              />
+              <button className="button" onClick={handleGuess}>Adivinhar</button>
+              {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((suggestion) => (
+                    <li
+                      key={suggestion}
+                      onClick={() => handleSuggestionClick(suggestion)} // Set the suggestion as the input value when clicked
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {remainingGuesses === 0 && !isGuessedCorrectly && !isGameOver && (
+            <p>Fim de tentativas! O Pokémon era {pokemonData.name}. Tente novamente!</p>
+          )}
+
+          {isGuessedCorrectly && <p>Parabéns! Você adivinhou corretamente!</p>}
+
+          <button className="button2" onClick={getNewPokemon}>Reset</button>
+        </div>
       ) : (
-        <div className="pokemon-list">
-          {pokemons.map((pokemon) => {
-            if (
-              pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              searchTerm === '' ||
-              pokemon.id.toString().includes(searchTerm)
-            ) {
-              const primaryType = pokemon.types[0]?.type?.name;
-              const backgroundColor = typeColors[primaryType] || '#f4f4f4';
-
-              return (
-                <div
-                  key={pokemon.id}
-                  className="pokemon-item"
-                  style={{ backgroundColor }}
-                >
-                  <span className="pokemon-id">#{pokemon.id}</span>
-                  <img src={pokemon.sprites.front_default} alt={pokemon.name} className="pokemon-image" />
-                  <h3 className="pokemon-name">
-                    {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-                  </h3>
-                  <Link to={`/pokemons/${pokemon.id}`} className="info-icon">
-                    I
-                  </Link>
-                  <p className="pokemon-price">
-                    Preço: {getTotalPrice(pokemon.id).toFixed(2)}€
-                  </p>
-                  <div className="counter">
-                    <button onClick={() => removeFromCart(pokemon.id)}>-</button>
-                    <span>{cart[pokemon.id] || 0}</span>
-                    <button onClick={() => addToCart(pokemon.id)}>+</button>
-                  </div>
-                </div>
-              );
-            }
-          })}
-        </div>
-      )}
-
-      <div className="cart-icon" onClick={toggleCart}>
-        <FaShoppingCart size={30} color="white" />
-        <div className="cart-bubble">
-          {Object.values(cart).reduce((sum, count) => sum + count, 0)}
-        </div>
-      </div>
-
-      {showCart && (
-        <div className="cart-popup">
-          <h3>Carrinho</h3>
-          <ul>
-            {Object.entries(cart)
-              .filter(([id, count]) => count > 0)
-              .map(([id, count]) => {
-                const pokemon = pokemons.find((poke) => poke.id === parseInt(id));
-                if (!pokemon) return null;
-
-                return (
-                  <li key={id} className="cart-item">
-                    <div className="cart-item-left">
-                      <img src={pokemon.sprites.front_default} alt={pokemon.name} className="cart-item-image" />
-                      <span className="cart-item-name">
-                        {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-                      </span>
-                    </div>
-                    <div className="cart-item-controls">
-                      <span className="cart-item-price">
-                        {getTotalPrice(id, count).toFixed(2)}€
-                      </span>
-                      <button onClick={() => removeFromCart(id)}>-</button>
-                      <span>{count}</span>
-                      <button onClick={() => addToCart(id)}>+</button>
-                      <button onClick={() => clearCartItem(id)}>
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </li>
-                );
-              })}
-          </ul>
-          <div className="cart-footer">
-            <button className="cart-total">
-              Total: {Object.entries(cart)
-                .reduce((sum, [id, count]) => sum + getTotalPrice(id, count), 0)
-                .toFixed(2)}€
-            </button>
-            <Link to="/checkout" className="checkout-button">
-              Pagar
-            </Link>
-          </div>
-        </div>
+        <p>Carregando dados do Pokémon...</p>
       )}
     </div>
   );
 };
 
-export default Pokemons;
+export default Home;

@@ -24,3 +24,65 @@
   margin: auto;
   filter:brightness(0%)
 }
+
+
+
+.button:hover {
+  transition: 400ms;
+  opacity: 80%;
+  color: white;
+}
+.button{
+  background-color: #ee1515; 
+  color: black; 
+  padding: 0.5rem 1rem;
+  border:none;
+  display: inline-block;
+  border-radius: 5px;
+  justify-content: space-between;
+  margin: 10px;
+  
+}
+.button2:hover {
+  transition: 400ms;
+  opacity: 80%;
+  color: white;
+}
+.button2{
+  background-color: #6390F0; 
+  padding: 0.5rem 1rem;
+  border:none;
+  display: inline-block;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.textboxpkmn{
+  width: 10%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+.suggestions-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}

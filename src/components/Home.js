@@ -1,12 +1,27 @@
 import { useState, useEffect } from 'react';
 import '../styles/Home.css';
 
-// Function to generate a random number between 1 and 252 (inclusive)
+// Fetching the first 252 Pokémon names and details
+const fetchPokemons = async () => {
+  try {
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=252');
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    const data = await response.json();
+
+    // Return only the names of the Pokémon
+    return data.results.map((pokemon) => pokemon.name);
+  } catch (error) {
+    console.error("Failed to fetch Pokémon data:", error);
+    return [];
+  }
+};
+
 const Guessthatpokemon = () => {
   return Math.floor(Math.random() * 252) + 1; // Generate a number from 1 to 252
 };
 
-// Function to fetch details of a Pokémon based on its ID
 const fetchPokemon = async (pokemonId) => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
@@ -24,19 +39,76 @@ const fetchPokemon = async (pokemonId) => {
 const Home = () => {
   const [pokemonId, setPokemonId] = useState(null);
   const [pokemonData, setPokemonData] = useState(null);
+  const [guess, setGuess] = useState('');
+  const [remainingGuesses, setRemainingGuesses] = useState(3);
+  const [isGuessedCorrectly, setIsGuessedCorrectly] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [pokemonNames, setPokemonNames] = useState([]); // Stores fetched Pokémon names for autocomplete
+  const [suggestions, setSuggestions] = useState([]); // Stores filtered suggestions
 
+  // Fetch Pokémon names when the component mounts
   useEffect(() => {
-    const randomPokemonId = Guessthatpokemon(); // Generate a random Pokémon ID
-    setPokemonId(randomPokemonId); // Set the random Pokémon ID
-
-    // Fetch the Pokémon data
-    const getPokemonData = async () => {
-      const data = await fetchPokemon(randomPokemonId);
-      setPokemonData(data); // Set the fetched Pokémon data to state
+    const getPokemonNames = async () => {
+      const names = await fetchPokemons();
+      setPokemonNames(names); // Save the fetched Pokémon names
     };
 
-    getPokemonData(); // Call the function to fetch Pokémon data
-  }, []); // This runs once when the component mounts
+    getPokemonNames();
+    getNewPokemon();
+  }, []); // Empty dependency array ensures this runs once when the component mounts
+
+  // Function to get a new random Pokémon and set data
+  const getNewPokemon = async () => {
+    const randomPokemonId = Guessthatpokemon(); // Generate a random Pokémon ID
+    setPokemonId(randomPokemonId); // Update the state with new Pokémon ID
+    setRemainingGuesses(3); // Reset the guesses
+    setIsGuessedCorrectly(false); // Reset the guess state
+    setIsGameOver(false); // Reset game over state
+    setGuess(''); // Reset the guess input field
+    setSuggestions([]); // Clear suggestions
+
+    const data = await fetchPokemon(randomPokemonId); // Fetch new Pokémon data
+    setPokemonData(data); // Set the new Pokémon data
+  };
+
+  // Handle the "Adivinhar" button click
+  const handleGuess = () => {
+    if (isGameOver || isGuessedCorrectly) return; // Do nothing if game is over or guessed correctly
+
+    if (guess.toLowerCase() === pokemonData.name.toLowerCase()) {
+      setIsGuessedCorrectly(true); // Correct guess
+    } else {
+      if (remainingGuesses > 1) {
+        setRemainingGuesses(remainingGuesses - 1); // Incorrect guess, decrement remaining guesses
+      } else {
+        setIsGameOver(true); // No more guesses left, game over
+      }
+    }
+    setGuess(''); // Clear the input field after each guess
+  };
+
+  // Handle the input change and filter suggestions
+  const handleInputChange = (event) => {
+    const inputValue = event.target.value;
+    setGuess(inputValue);
+  
+    if (inputValue) {
+      const filteredSuggestions = pokemonNames
+        .filter((name) => name.toLowerCase().includes(inputValue.toLowerCase()))
+        .slice(0, 5); // Limit suggestions to 5 items
+      console.log('Filtered Suggestions:', filteredSuggestions); // Add this log
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  };
+  
+
+  // Handle the click event on a suggestion
+  const handleSuggestionClick = (suggestion) => {
+    setGuess(suggestion); // Set the input value to the clicked suggestion
+    setSuggestions([]); // Clear suggestions after selection
+  };
 
   return (
     <div className="home">
@@ -44,13 +116,51 @@ const Home = () => {
       <p>A melhor carne de pokemon do mercado!</p>
       <p>A carne vem toda congelada, para não estragar (pokemons de gelo vêm sem gelo)!</p>
 
-      
       {pokemonData ? (
         <div>
-          <h2>{pokemonData.name}</h2>
           
-          <img src={pokemonData.sprites.front_default} alt={pokemonData.name} className="pokemon-images" />
-          
+
+          <img
+            src={pokemonData.sprites.front_default}
+            alt={pokemonData.name}
+            className="pokemon-images"
+            style={{
+              filter: isGuessedCorrectly || isGameOver ? 'brightness(100%)' : 'brightness(0%)',
+            }}
+          />
+
+          {!isGameOver && !isGuessedCorrectly && remainingGuesses > 0 && (
+            <div>
+              <input
+                className="textboxpkmn"
+                placeholder="Adivinhe o Pokémon"
+                value={guess}
+                onChange={handleInputChange}
+              />
+              <button className="button" onClick={handleGuess}>Adivinhar</button>
+              {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((suggestion) => (
+                    <li
+                      key={suggestion}
+                      onClick={() => handleSuggestionClick(suggestion)} // Set the suggestion as the input value when clicked
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {remainingGuesses === 0 && !isGuessedCorrectly && !isGameOver && (
+            <p>Fim de tentativas! O Pokémon era {pokemonData.name}. Tente novamente!</p>
+
+          )}
+
+          {isGuessedCorrectly && <p>Parabéns! Você adivinhou corretamente!</p>}
+
+          <button className="button2" onClick={getNewPokemon}>Reset</button>
         </div>
       ) : (
         <p>Carregando dados do Pokémon...</p>
