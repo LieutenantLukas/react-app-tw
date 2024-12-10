@@ -48,7 +48,8 @@ const Home = () => {
       {pokemonData ? (
         <div>
           <h2>{pokemonData.name}</h2>
-          <img src={pokemonData.sprites.front_default} alt={pokemonData.name} />
+          
+          <img src={pokemonData.sprites.front_default} alt={pokemonData.name} className="pokemon-images" />
           
         </div>
       ) : (

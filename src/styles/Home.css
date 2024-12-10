@@ -15,3 +15,12 @@
   color: #333;
   font-size: 1.2rem;
 }
+
+.pokemon-images {
+  width: auto;
+  height: auto;
+  max-height: 140px;
+  display: block;
+  margin: auto;
+  filter:brightness(0%)
+}
