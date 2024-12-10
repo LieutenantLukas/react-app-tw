@@ -6,7 +6,7 @@ const ThankYouPage = () => {
   return (
     <div className="thank-you">
       <h1>Obrigado pela sua compra!</h1>
-      <p>Esperamos vê-lo novamente em breve! Se tiver alguma dúvida, não hesite em contactar-nos.</p>
+      <p>Por favor volte sempre para encontrar a carne mais fresca de pokemon.</p>
       <Link to="/pokemons" className="back-to-home">
         Voltar para o início
       </Link>
