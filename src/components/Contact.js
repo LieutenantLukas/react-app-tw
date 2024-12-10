@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Contact.css';
 
 const Contact = () => {
@@ -10,18 +11,22 @@ const Contact = () => {
 
       <form>
         <p id="confirm"></p>
-      <label>Nome:</label>
-      <input type="text" id="nome" required ></input><br></br>
-      <label>Assunto:</label>
-      <input type="text" id="assunto" required></input><br></br>
-      <label>Mensagem:</label>
-      <input type="textarea" id="mensagem" required></input><br></br>
-      <button type="submit" id="submit" onClick={()=>{alert("Mensagem enviada com sucesso!")}}>Submit</button>
+        <label>Nome:</label>
+        <input type="text" id="nome" required ></input><br></br>
+        <label>Assunto:</label>
+        <input type="text" id="assunto" required></input><br></br>
+        <label>Mensagem:</label>
+        <input type="textarea" id="mensagem" required></input><br></br>
+        <button type="submit" id="submit" onClick={() => {
+          alert("Mensagem enviada com sucesso!");
+          window.location.href = "/pokemon.js";  // Redirect to /pokemon
+        }}
+        >Submit</button>
       </form>
-      
+
     </div>
 
-    
+
   );
 };
 
