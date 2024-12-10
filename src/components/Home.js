@@ -9,7 +9,6 @@ const fetchPokemons = async () => {
       throw new Error(`Erro HTTP: ${response.status}`);
     }
     const data = await response.json();
-
     // Return only the names of the Pokémon
     return data.results.map((pokemon) => pokemon.name);
   } catch (error) {
@@ -45,8 +44,8 @@ const Home = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [pokemonNames, setPokemonNames] = useState([]); // Stores fetched Pokémon names for autocomplete
   const [suggestions, setSuggestions] = useState([]); // Stores filtered suggestions
-  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
-  const [guessedPokemons, setGuessedPokemons] = useState([]); // Track guessed Pokémon
+  const [error, setError] = useState(''); // To store error message if guess is invalid
+  const [guessedPokemon, setGuessedPokemon] = useState([]); // Stores guessed Pokémon (both correct and incorrect)
 
   // Fetch Pokémon names when the component mounts
   useEffect(() => {
@@ -68,8 +67,8 @@ const Home = () => {
     setIsGameOver(false); // Reset game over state
     setGuess(''); // Reset the guess input field
     setSuggestions([]); // Clear suggestions
-    setErrorMessage(''); // Clear any previous error message
-    setGuessedPokemons([]); // Clear previously guessed Pokémon
+    setError(''); // Clear previous error message
+    setGuessedPokemon([]); // Clear previous guessed Pokémon
 
     const data = await fetchPokemon(randomPokemonId); // Fetch new Pokémon data
     setPokemonData(data); // Set the new Pokémon data
@@ -79,26 +78,16 @@ const Home = () => {
   const handleGuess = () => {
     if (isGameOver || isGuessedCorrectly) return; // Do nothing if the game is over or guessed correctly
 
-    // Check if the guess is not empty and exists in the Pokémon names list
-    if (guess.trim() === '') {
-      setErrorMessage('Por favor, insira um nome de Pokémon válido!');
-      return; // Do nothing if the guess is empty
+    // Check if the guess is valid
+    if (!guess.trim() || !pokemonNames.includes(guess.toLowerCase())) {
+      setError('Por favor, digite um Pokémon válido!');
+      return;
     }
+    setError(''); // Clear the error if the guess is valid
 
-    if (!pokemonNames.includes(guess.toLowerCase())) {
-      setErrorMessage('Pokémon não encontrado! Tente novamente.');
-      return; // Do nothing if the Pokémon doesn't exist in the list
-    }
-
-    if (guessedPokemons.includes(guess.toLowerCase())) {
-      setErrorMessage('Você já adivinhou esse Pokémon! Tente outro.');
-      return; // Prevent guessing the same Pokémon twice
-    }
-
-    // If the guess is valid, check if it's correct
     if (guess.toLowerCase() === pokemonData.name.toLowerCase()) {
       setIsGuessedCorrectly(true); // Correct guess
-      setErrorMessage(''); // Clear error message if the guess is correct
+      setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]); // Add to guessed Pokémon list
     } else {
       if (remainingGuesses > 1) {
         setRemainingGuesses(remainingGuesses - 1); // Incorrect guess, decrement remaining guesses
@@ -106,17 +95,8 @@ const Home = () => {
         setRemainingGuesses(0); // Set remaining guesses to 0 explicitly
         setIsGameOver(true); // Set game over state
       }
-      setErrorMessage('Tente novamente!');
+      setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]); // Add to guessed Pokémon list
     }
-
-    // Add the guessed Pokémon to the list of guessed Pokémon and remove it from suggestions if incorrect
-    setGuessedPokemons([...guessedPokemons, guess.toLowerCase()]);
-
-    // Remove the guessed Pokémon from the suggestions list if the guess was incorrect
-    if (remainingGuesses > 0) {
-      setSuggestions(suggestions.filter((suggestion) => suggestion.toLowerCase() !== guess.toLowerCase()));
-    }
-
     setGuess(''); // Clear the input field after each guess
   };
 
@@ -126,12 +106,19 @@ const Home = () => {
     setGuess(inputValue);
 
     if (inputValue) {
+      // Filter suggestions by excluding guessed Pokémon
       const filteredSuggestions = pokemonNames
-        .filter((name) => name.toLowerCase().includes(inputValue.toLowerCase()) && !guessedPokemons.includes(name.toLowerCase())) // Exclude guessed names
+        .filter((name) => name.toLowerCase().includes(inputValue.toLowerCase()) && !guessedPokemon.includes(name.toLowerCase()))
         .slice(0, 5); // Limit suggestions to 5 items
+      console.log('Filtered Suggestions:', filteredSuggestions); // Add this log
       setSuggestions(filteredSuggestions);
     } else {
       setSuggestions([]);
+    }
+
+    // Clear error if there's a valid guess
+    if (inputValue && pokemonNames.includes(inputValue.toLowerCase()) && !guessedPokemon.includes(inputValue.toLowerCase())) {
+      setError('');
     }
   };
 
@@ -158,35 +145,36 @@ const Home = () => {
             }}
           />
 
-          {/* Display Guesses Remaining */}
-          <p>Tentativas restantes: {remainingGuesses}</p>
+          <div className="textboxpkmn-container">
+            {error && <p className="error-message">{error}</p>} {/* Display error message if exists */}
 
-          {/* Display error message above the input box */}
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <p className="guesses-remaining">Tentativas restantes: {remainingGuesses}</p> {/* Display remaining guesses */}
 
-          {!isGameOver && !isGuessedCorrectly && remainingGuesses > 0 && (
-            <div>
-              <input
-                className="textboxpkmn"
-                placeholder="Adivinhe o Pokémon"
-                value={guess}
-                onChange={handleInputChange}
-              />
-              <button className="button" onClick={handleGuess}>Adivinhar</button>
-              {suggestions.length > 0 && (
-                <ul className="suggestions-list">
-                  {suggestions.map((suggestion) => (
-                    <li
-                      key={suggestion}
-                      onClick={() => handleSuggestionClick(suggestion)} // Set the suggestion as the input value when clicked
-                    >
-                      {suggestion}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
+            {/* Show input box and button only if the game is ongoing */}
+            {!isGuessedCorrectly && !isGameOver && remainingGuesses > 0 && (
+              <div>
+                <input
+                  className="textboxpkmn"
+                  placeholder="Adivinhe o Pokémon"
+                  value={guess}
+                  onChange={handleInputChange}
+                />
+                <button className="button" onClick={handleGuess}>Adivinhar</button>
+                {suggestions.length > 0 && (
+                  <ul className="suggestions-list">
+                    {suggestions.map((suggestion) => (
+                      <li
+                        key={suggestion}
+                        onClick={() => handleSuggestionClick(suggestion)} // Set the suggestion as the input value when clicked
+                      >
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
 
           {remainingGuesses === 0 && !isGuessedCorrectly && (
             <p>Fim de tentativas! O Pokémon era {pokemonData.name}. Tente novamente!</p>
