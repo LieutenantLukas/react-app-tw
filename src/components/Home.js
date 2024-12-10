@@ -73,7 +73,7 @@ const Home = () => {
 
   // Handle the "Adivinhar" button click
   const handleGuess = () => {
-    if (isGameOver || isGuessedCorrectly) return; // Do nothing if game is over or guessed correctly
+    if (isGameOver || isGuessedCorrectly) return; // Do nothing if the game is over or guessed correctly
 
     if (guess.toLowerCase() === pokemonData.name.toLowerCase()) {
       setIsGuessedCorrectly(true); // Correct guess
@@ -81,17 +81,19 @@ const Home = () => {
       if (remainingGuesses > 1) {
         setRemainingGuesses(remainingGuesses - 1); // Incorrect guess, decrement remaining guesses
       } else {
-        setIsGameOver(true); // No more guesses left, game over
+        setRemainingGuesses(0); // Set remaining guesses to 0 explicitly
+        setIsGameOver(true); // Set game over state
       }
     }
     setGuess(''); // Clear the input field after each guess
   };
 
+
   // Handle the input change and filter suggestions
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
     setGuess(inputValue);
-  
+
     if (inputValue) {
       const filteredSuggestions = pokemonNames
         .filter((name) => name.toLowerCase().includes(inputValue.toLowerCase()))
@@ -102,7 +104,7 @@ const Home = () => {
       setSuggestions([]);
     }
   };
-  
+
 
   // Handle the click event on a suggestion
   const handleSuggestionClick = (suggestion) => {
@@ -118,7 +120,7 @@ const Home = () => {
 
       {pokemonData ? (
         <div>
-          
+
 
           <img
             src={pokemonData.sprites.front_default}
@@ -153,9 +155,8 @@ const Home = () => {
             </div>
           )}
 
-          {remainingGuesses === 0 && !isGuessedCorrectly && !isGameOver && (
+          {remainingGuesses === 0 && !isGuessedCorrectly && (
             <p>Fim de tentativas! O Pokémon era {pokemonData.name}. Tente novamente!</p>
-
           )}
 
           {isGuessedCorrectly && <p>Parabéns! Você adivinhou corretamente!</p>}
