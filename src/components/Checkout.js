@@ -1,13 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext';
 import '../styles/Checkout.css';
 import jsPDF from 'jspdf';
 
 const Checkout = () => {
   const { cart, clearCart, getTotalPrice, pokemonData } = useCart();
+  const navigate = useNavigate();
 
   const handlePayment = () => {
+    // Check if the cart is empty
+    if (Object.entries(cart).length === 0 || Object.values(cart).every(count => count === 0)) {
+      alert("Erro: O carrinho está vazio. Adicione itens antes de pagar.");
+      return;
+    }
+
+    // Generate the receipt
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -37,10 +45,9 @@ const Checkout = () => {
 
         const img = new Image();
         img.src = pokemon.sprites.front_default;
-        doc.addImage(img, 'PNG', 5, yPosition - 5, 10, 10); 
+        doc.addImage(img, 'PNG', 5, yPosition - 5, 10, 10);
 
         doc.text(`${count}x ${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}`, 20, yPosition);
-
         doc.text(`${total}€`, 75, yPosition, { align: 'right' });
 
         yPosition += 12;
@@ -49,7 +56,6 @@ const Checkout = () => {
     yPosition += 5;
     doc.line(5, yPosition, 75, yPosition);
     yPosition += 8;
-
 
     const totalPrice = Object.entries(cart)
       .reduce((sum, [id, count]) => sum + getTotalPrice(id, count), 0)
@@ -60,7 +66,10 @@ const Checkout = () => {
     doc.text(`${totalPrice}€`, 75, yPosition, { align: 'right' });
 
     doc.save('Recibo_de_Compra.pdf');
+
+    // Clear the cart and navigate to the success page
     clearCart();
+    navigate('/thank-you');
   };
 
   return (
