@@ -21,7 +21,7 @@ const App = () => {
           <Route path="/pokemons/:id" element={<PokemonDetails />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path='/Thankyou' element={<ThankYouPage/>} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
         </Routes>
       </Router>
     </CartProvider>
