@@ -5,6 +5,7 @@
   padding: 2rem;
   border: 3px solid #aec6cf;
   border-radius: 8px;
+  position: relative; /* Ensure suggestions are positioned relative to this container */
 }
 
 .home h1 {
@@ -14,4 +15,84 @@
 .home p {
   color: #333;
   font-size: 1.2rem;
+}
+
+.pokemon-images {
+  width: auto;
+  height: auto;
+  max-height: 140px;
+  display: block;
+  margin: auto;
+  filter: brightness(0%)
+}
+
+.button:hover {
+  transition: 400ms;
+  opacity: 80%;
+  color: white;
+}
+
+.button {
+  background-color: #ee1515;
+  color: black;
+  padding: 0.5rem 1rem;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  justify-content: space-between;
+  margin: 0 5px; /* Added a little margin between buttons */
+}
+
+.button2:hover {
+  transition: 400ms;
+  opacity: 80%;
+  color: white;
+}
+
+.button2 {
+  background-color: #6390F0;
+  padding: 0.5rem 1rem;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  margin: 0 5px; /* Added a little margin between buttons */
+}
+
+.textboxpkmn-container {
+  position: relative; /* Ensure the suggestions are positioned relative to the input */
+  display: inline-block;
+}
+
+.textboxpkmn {
+  width: 30%; /* Increased the width of the input box */
+  padding: 15px; /* Increased padding for a larger input field */
+  margin-bottom: 0; /* Remove bottom margin, suggestions list will be below */
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 4px;
+  font-size: 16px; /* Slightly increased font size */
+  transition: border 0.3s ease;
+}
+
+.suggestions-list {
+  width: 30%; /* Match the width of the input */
+  padding: 10px;
+  margin: 0; /* Remove margin for better alignment */
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 4px;
+  font-size: 14px;
+  position: absolute; /* Position the list absolutely */
+  top: 100%; /* Position directly below the input */
+  left: 50px; /* Align it with the input's left side */
+  z-index: 10;
+  background-color: white;
+  list-style-type: none;
+}
+
+.suggestions-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
 }

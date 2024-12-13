@@ -7,6 +7,7 @@ import Pokemons from './components/Pokemons';
 import Contact from './components/Contact';
 import PokemonDetails from './components/PokemonDetails';
 import Checkout from './components/Checkout';
+import ThankYouPage from './components/ThankYouPage';
 import './styles/App.css';
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/pokemons/:id" element={<PokemonDetails />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
         </Routes>
       </Router>
     </CartProvider>
