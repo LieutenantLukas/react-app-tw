@@ -5,7 +5,7 @@
   padding: 2rem;
   border: 3px solid #aec6cf;
   border-radius: 8px;
-  position: relative; /* Ensure suggestions are positioned relative to this container */
+  position: relative;
 }
 
 .home h1 {

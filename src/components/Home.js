@@ -42,90 +42,81 @@ const Home = () => {
   const [remainingGuesses, setRemainingGuesses] = useState(3);
   const [isGuessedCorrectly, setIsGuessedCorrectly] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [pokemonNames, setPokemonNames] = useState([]); // Stores fetched Pokémon names for autocomplete
-  const [suggestions, setSuggestions] = useState([]); // Stores filtered suggestions
-  const [error, setError] = useState(''); // To store error message if guess is invalid
-  const [guessedPokemon, setGuessedPokemon] = useState([]); // Stores guessed Pokémon (both correct and incorrect)
+  const [pokemonNames, setPokemonNames] = useState([]); 
+  const [suggestions, setSuggestions] = useState([]);
+  const [error, setError] = useState(''); 
+  const [guessedPokemon, setGuessedPokemon] = useState([]);
 
-  // Fetch Pokémon names when the component mounts
   useEffect(() => {
     const getPokemonNames = async () => {
       const names = await fetchPokemons();
-      setPokemonNames(names); // Save the fetched Pokémon names
+      setPokemonNames(names); 
     };
 
     getPokemonNames();
     getNewPokemon();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
+  }, []);
 
-  // Function to get a new random Pokémon and set data
   const getNewPokemon = async () => {
-    const randomPokemonId = Guessthatpokemon(); // Generate a random Pokémon ID
-    setPokemonId(randomPokemonId); // Update the state with new Pokémon ID
-    setRemainingGuesses(3); // Reset the guesses
-    setIsGuessedCorrectly(false); // Reset the guess state
-    setIsGameOver(false); // Reset game over state
-    setGuess(''); // Reset the guess input field
-    setSuggestions([]); // Clear suggestions
-    setError(''); // Clear previous error message
-    setGuessedPokemon([]); // Clear previous guessed Pokémon
+    const randomPokemonId = Guessthatpokemon(); 
+    setPokemonId(randomPokemonId); 
+    setRemainingGuesses(3); 
+    setIsGuessedCorrectly(false); 
+    setIsGameOver(false);
+    setGuess('');
+    setSuggestions([]);
+    setError('');
+    setGuessedPokemon([]);
 
-    const data = await fetchPokemon(randomPokemonId); // Fetch new Pokémon data
-    setPokemonData(data); // Set the new Pokémon data
+    const data = await fetchPokemon(randomPokemonId); 
+    setPokemonData(data); 
   };
 
-  // Handle the "Adivinhar" button click
   const handleGuess = () => {
-    if (isGameOver || isGuessedCorrectly) return; // Do nothing if the game is over or guessed correctly
+    if (isGameOver || isGuessedCorrectly) return; 
 
-    // Check if the guess is valid
     if (!guess.trim() || !pokemonNames.includes(guess.toLowerCase())) {
       setError('Por favor, digite um Pokémon válido!');
       return;
     }
-    setError(''); // Clear the error if the guess is valid
+    setError('');
 
     if (guess.toLowerCase() === pokemonData.name.toLowerCase()) {
-      setIsGuessedCorrectly(true); // Correct guess
-      setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]); // Add to guessed Pokémon list
+      setIsGuessedCorrectly(true);
+      setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]);
     } else {
       if (remainingGuesses > 1) {
-        setRemainingGuesses(remainingGuesses - 1); // Incorrect guess, decrement remaining guesses
+        setRemainingGuesses(remainingGuesses - 1);
       } else {
-        setRemainingGuesses(0); // Set remaining guesses to 0 explicitly
-        setIsGameOver(true); // Set game over state
+        setRemainingGuesses(0); 
+        setIsGameOver(true);
       }
-      setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]); // Add to guessed Pokémon list
+      setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]);
     }
-    setGuess(''); // Clear the input field after each guess
+    setGuess('');
   };
 
-  // Handle the input change and filter suggestions
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
     setGuess(inputValue);
 
     if (inputValue) {
-      // Filter suggestions by excluding guessed Pokémon
       const filteredSuggestions = pokemonNames
         .filter((name) => name.toLowerCase().includes(inputValue.toLowerCase()) && !guessedPokemon.includes(name.toLowerCase()))
-        .slice(0, 5); // Limit suggestions to 5 items
-      console.log('Filtered Suggestions:', filteredSuggestions); // Add this log
+        .slice(0, 5);
       setSuggestions(filteredSuggestions);
     } else {
       setSuggestions([]);
     }
 
-    // Clear error if there's a valid guess
     if (inputValue && pokemonNames.includes(inputValue.toLowerCase()) && !guessedPokemon.includes(inputValue.toLowerCase())) {
       setError('');
     }
   };
 
-  // Handle the click event on a suggestion
   const handleSuggestionClick = (suggestion) => {
-    setGuess(suggestion); // Set the input value to the clicked suggestion
-    setSuggestions([]); // Clear suggestions after selection
+    setGuess(suggestion); 
+    setSuggestions([]);
   };
 
   return (
@@ -146,11 +137,9 @@ const Home = () => {
           />
 
           <div className="textboxpkmn-container">
-            {error && <p className="error-message">{error}</p>} {/* Display error message if exists */}
+            {error && <p className="error-message">{error}</p>}
 
-            <p className="guesses-remaining">Tentativas restantes: {remainingGuesses}</p> {/* Display remaining guesses */}
-
-            {/* Show input box and button only if the game is ongoing */}
+            <p className="guesses-remaining">Tentativas restantes: {remainingGuesses}</p>
             {!isGuessedCorrectly && !isGameOver && remainingGuesses > 0 && (
               <div>
                 <input
@@ -165,7 +154,7 @@ const Home = () => {
                     {suggestions.map((suggestion) => (
                       <li
                         key={suggestion}
-                        onClick={() => handleSuggestionClick(suggestion)} // Set the suggestion as the input value when clicked
+                        onClick={() => handleSuggestionClick(suggestion)}
                       >
                         {suggestion}
                       </li>
