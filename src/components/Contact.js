@@ -6,9 +6,7 @@ const Contact = () => {
   const navigate = useNavigate();
 
   const handleClick = (event) => {
-    event.preventDefault(); // Prevent form submission from refreshing the page
-
-    // Validate form fields
+    event.preventDefault(); 
     const nome = document.getElementById("nome").value.trim();
     const assunto = document.getElementById("assunto").value.trim();
     const mensagem = document.getElementById("mensagem").value.trim();

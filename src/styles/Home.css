@@ -40,7 +40,7 @@
   display: inline-block;
   border-radius: 5px;
   justify-content: space-between;
-  margin: 0 5px; /* Added a little margin between buttons */
+  margin: 0 20px; 
 }
 
 .button2:hover {
@@ -55,34 +55,34 @@
   border: none;
   display: inline-block;
   border-radius: 5px;
-  margin: 0 5px; /* Added a little margin between buttons */
+  margin: 0 -15px; 
 }
 
 .textboxpkmn-container {
-  position: relative; /* Ensure the suggestions are positioned relative to the input */
+  position: relative;
   display: inline-block;
 }
 
 .textboxpkmn {
-  width: 30%; /* Increased the width of the input box */
-  padding: 15px; /* Increased padding for a larger input field */
-  margin-bottom: 0; /* Remove bottom margin, suggestions list will be below */
+  width: 145px;
+  padding: 15px;
+  margin-bottom: 0; 
   border: 1px solid rgb(0, 0, 0);
   border-radius: 4px;
-  font-size: 16px; /* Slightly increased font size */
-  transition: border 0.3s ease;
+  font-size: 16px; 
 }
 
 .suggestions-list {
-  width: 30%; /* Match the width of the input */
+  width: 145px; 
   padding: 10px;
-  margin: 0; /* Remove margin for better alignment */
+  margin: 0;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 4px;
   font-size: 14px;
-  position: absolute; /* Position the list absolutely */
-  top: 100%; /* Position directly below the input */
-  left: 50px; /* Align it with the input's left side */
+  position: absolute; 
+  top: 100%; 
+  left: 50%; 
+  transform: translateX(-90%);
   z-index: 10;
   background-color: white;
   list-style-type: none;

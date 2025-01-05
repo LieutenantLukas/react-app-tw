@@ -17,18 +17,17 @@
   color: #fff;
 }
 
-/* Style for the form container */
 form {
   width: 100%;
   max-width: 500px;
   margin: 30px auto;
   padding: 20px;
-  background-color: #bfd2da; /*esta shit controla a cor do form. por favor escolhe uma cor melhor    */
+  background-color: #bfd2da; /*controla a cor do form. por favor escolhe uma cor melhor*/
   border-radius: 8px;
   font-family: Arial, sans-serif;
 }
 
-/* Style for form labels */
+
 label {
   display: block;
   font-size: 16px;
@@ -36,7 +35,7 @@ label {
   color: #333;
 }
 
-/* Style for input fields */
+
 #nome {
   width: 90%;
   padding: 10px;
@@ -96,9 +95,3 @@ label {
 #submit:hover {
   background-color: #0056b3;
 }
-
-
-
-/*ao fazer este css descobri que por algum motivo a pagina pokemons.js vem buscar styles aqui tambem 
-(descobri isso porque a barra de pesquisa fodeu-se toda quando fiz cenas aqui para o form. mexer no css do botao submit tambem mexeu nos botoes do contador por algum motivo) 
-cuidado ao mexer aqui para nao alterar no codigo principal*/

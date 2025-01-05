@@ -83,7 +83,7 @@ export const CartProvider = ({ children }) => {
     const typePrice = typePrices[primaryType] || 1;
     const weightInKg = pokemon.weight / 10; // Peso em kg
 
-    // Tentativa de uso de `is_legendary` para determinar se um Pokémon é lendário
+    // Tentativa de uso de `is_legendary` para determinar se um Pokémon é lendário e auumentar o preco accordingly
     const isLegendary = pokemon.is_legendary;
 
     // Calcular o preço total

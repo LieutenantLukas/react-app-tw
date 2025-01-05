@@ -69,7 +69,7 @@ const Pokemons = () => {
 
       setLoading(false);
     } catch (error) {
-      console.error('Erro ao buscar Pokémon:', error);
+      console.error('Erro ao chamar todoss os Pokémon:', error);
       setError(true);
       setLoading(false);
     }

@@ -9,13 +9,12 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const handlePayment = () => {
-    // Check if the cart is empty
+    // Verificar se o carrinho está vazio
     if (Object.entries(cart).length === 0 || Object.values(cart).every(count => count === 0)) {
       alert("Erro: O carrinho está vazio. Adicione itens antes de pagar.");
       return;
     }
 
-    // Generate the receipt
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -67,7 +66,7 @@ const Checkout = () => {
 
     doc.save('Recibo_de_Compra.pdf');
 
-    // Clear the cart and navigate to the success page
+    //  Limpar o carrinho e levar para a página de agradecimento
     clearCart();
     navigate('/thank-you');
   };

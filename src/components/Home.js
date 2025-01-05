@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../styles/Home.css';
 
-// Fetching the first 252 Pokémon names and details
+// Buscar os pokemons da API
 const fetchPokemons = async () => {
   try {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=252');
@@ -9,7 +9,7 @@ const fetchPokemons = async () => {
       throw new Error(`Erro HTTP: ${response.status}`);
     }
     const data = await response.json();
-    // Return only the names of the Pokémon
+    // Retornar os nomes dos pokemons
     return data.results.map((pokemon) => pokemon.name);
   } catch (error) {
     console.error("Failed to fetch Pokémon data:", error);
@@ -76,7 +76,7 @@ const Home = () => {
     if (isGameOver || isGuessedCorrectly) return; 
 
     if (!guess.trim() || !pokemonNames.includes(guess.toLowerCase())) {
-      setError('Por favor, digite um Pokémon válido!');
+      setError('Por favor, usa um Pokémon válido.');
       return;
     }
     setError('');
@@ -86,7 +86,8 @@ const Home = () => {
       setGuessedPokemon([...guessedPokemon, guess.toLowerCase()]);
     } else {
       if (remainingGuesses > 1) {
-        setRemainingGuesses(remainingGuesses - 1);
+        setError('Nao era esse o pokemon :/. Try Again!');
+        setRemainingGuesses(remainingGuesses - 1); 
       } else {
         setRemainingGuesses(0); 
         setIsGameOver(true);
@@ -138,7 +139,6 @@ const Home = () => {
 
           <div className="textboxpkmn-container">
             {error && <p className="error-message">{error}</p>}
-
             <p className="guesses-remaining">Tentativas restantes: {remainingGuesses}</p>
             {!isGuessedCorrectly && !isGameOver && remainingGuesses > 0 && (
               <div>
@@ -166,15 +166,15 @@ const Home = () => {
           </div>
 
           {remainingGuesses === 0 && !isGuessedCorrectly && (
-            <p>Fim de tentativas! O Pokémon era {pokemonData.name}. Tente novamente!</p>
+            <p>Game Over! O Pokémon era {pokemonData.name}. Tenta novamente!</p>
           )}
 
-          {isGuessedCorrectly && <p>Parabéns! Você adivinhou corretamente!</p>}
+          {isGuessedCorrectly && <p>Parabéns! Adivinhaste corretamente!</p>}
 
           <button className="button2" onClick={getNewPokemon}>Reset</button>
         </div>
       ) : (
-        <p>Carregando dados do Pokémon...</p>
+        <p>A carregar dados dos Pokémon...</p>
       )}
     </div>
   );
